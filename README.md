@@ -1,3 +1,3 @@
 # Some Web App
 
-This is a basic React-Express-Node stack with Webpack bundling and Babel transpilation.
+This is some web app that does some web app thing
