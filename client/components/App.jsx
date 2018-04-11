@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-const moment = require('moment');
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+const moment = require('moment');
 
 class App extends Component {
   constructor (props) {
     super(props);
-    this.state = { autonomy: 0, horsepower: 0 };
+    this.state = { text: '', autonomy: 0, horsepower: 0 };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleCopy = this.handleKeyDown.bind(this);
   }
   
 
@@ -51,7 +53,12 @@ class App extends Component {
         <textarea
           style={{ display: 'flex' }}
           onKeyDown={this.handleKeyDown}
+          onChange={(event) => { this.setState({ text: event.target.value }) }}
         />
+
+        <CopyToClipboard text={ this.state.text } >
+          <button>📋</button>
+        </CopyToClipboard>
       </div>
   )};
 };
