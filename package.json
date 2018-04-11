@@ -17,6 +17,7 @@
     "express": "^4.16.3",
     "moment": "^2.22.0",
     "react": "^16.3.1",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.3.1"
   },
   "babel": {
