@@ -3,13 +3,23 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const moment = require('moment');
 
+const Link = ({ link }) => (<a href={link}>{link}</a>);
+
 class App extends Component {
   constructor (props) {
     super(props);
-    this.state = { text: '', autonomy: 0, horsepower: 0 };
+    this.state = {
+      text: '',
+      autonomy: 0,
+      horsepower: 0,
+      codestitch: '',
+      talkio: '',
+      zoom: ''
+    };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleCopy = this.handleKeyDown.bind(this);
+    this.setRoom = this.setRoom.bind(this);
   }
   
 
@@ -21,13 +31,13 @@ class App extends Component {
       let horsepower = 0;
 
       for (let i = 0; i + 1 < text.length; i++) {
-        if (text[i] === 'a') {
+        if (text[i] === 'a' || text[i] === 'A') {
           if (text[i+1] === '+') {
             autonomy++;
           } else if (text[i+1] === '-') {
             autonomy--;
           }
-        } else if (text[i] === 'h') {
+        } else if (text[i] === 'h' || text[i] === 'H') {
           if (text[i+1] === '+') {
             horsepower++;
           } else if (text[i+1] === '-') {
@@ -42,6 +52,10 @@ class App extends Component {
 
       event.target.value = `${text.slice(0, cursorLocation)}\t\t[${moment().format('LTS')}]${text.slice(cursorLocation, text.length)}`;
     }
+  }
+
+  setRoom (room, value) {
+    this.setState({ [room]: value });
   }
 
   render () {
@@ -69,17 +83,22 @@ class App extends Component {
           <li><a href="https://hackreactorcore.force.com/hackreactor" target="_blank">Salesforce ⇗</a></li>
           <li><a href="https://codestitch.io" target="_blank">Codestitch ⇗</a></li>
         </ul>
+        <hr />
 
-        On tlk.io
+        <h4>On tlk.io:</h4>
+        <input placeholder="codestitch.io" onChange={(event) => {this.setRoom('codestitch', event.target.value)}}/>
+        <input placeholder="tlk.io" onChange={(event) => {this.setRoom('tlkio', event.target.value)}} />
+        <input placeholder="zoom" onChange={(event) => {this.setRoom('zoom', event.target.value)}} />
+
         <div style={{ border: '1px solid black', padding: '.5em .5em .5em .5em' }}>
           <pre style={{ whiteSpace: 'pre-wrap', margin: 0 }}>
             Hi - if you are present, please input your name in the field below and press enter to join the chat. Then post a message so I know you’re here!<br />
             -<br />
-            Hi! We’ll get started in just a few minutes. To get us started, can you please write your name and email in a comment in this codestitch.io pad? ___LINK___HERE__<br />
+            Hi! We’ll get started in just a few minutes. To get us started, can you please write your name and email in a comment in this codestitch.io pad? <Link link={this.state.codestitch} /> <br />
             -<br />
-            (5 minutes no-show): (substituting _refID_ as you did above): Hi - It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL: tlk.io/_refID_<br />
+            (5 minutes no-show): Hi - It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL: <Link link={this.state.tlkio} /><br />
             -<br />
-            Here’s the link to our video room: ___URL___HERE___. Once you have Zoom downloaded please click the link to join.
+            Here’s the link to our video room: <Link link={this.state.zoom} />. Once you have Zoom downloaded please click the link to join.
 
           </pre>
         </div>
