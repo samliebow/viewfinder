@@ -5,3 +5,7 @@ node_modules/
 .vscode/
 
 bundle.js
+
+client/prompts/*.js
+
+deprecated/
