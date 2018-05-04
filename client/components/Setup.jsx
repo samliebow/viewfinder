@@ -14,7 +14,7 @@ const Setup = ({ show, toggleShow, setRoom, links }) => (
           2. View applicant in <a href="https://hackreactorcore.force.com/hackreactor" target="_blank">Salesforce ⇗</a>
         </li>
         <li>
-          3. Pick a prompt that applicant has not been given before. <a href="https://drive.google.com/open?id=1yzyEviXgBXeAMRPoUVPutafJuSotGv9c72PgqHIU70o" target="_blank" >Prompts ⇗</a></li>
+          3. Pick a prompt that applicant has not been given before. <a href="https://drive.google.com/drive/u/2/folders/0B5_RJCdGH93GdGpKcGx1YVBXVWs" target="_blank" >Prompts ⇗</a></li>
         <li>
           4. Open up CodeStitch window. <a href="https://codestitch.io" target="_blank">Codestitch ⇗</a></li>
         <li> 5. Schedule a Zoom call with the following format: 'FIRST LAST - YYYY-MM-DD'.</li>
