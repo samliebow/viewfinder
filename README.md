@@ -2,6 +2,10 @@
 
 This application aids HR technical interviewers with note-taking and script-reading.
 
+<p align='center'>
+  <img src="./interview-noter.png" width="30%" alt='interview-noter.png'>
+</p>
+
 ## Installation
 
 After building the bundle you can simply open the index.html file, or serve the application with express.
