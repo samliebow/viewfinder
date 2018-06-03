@@ -22,25 +22,27 @@ class App extends Component {
         prompt: true,
         notes: true
       },
-      promptSrc: ''
+      promptSrc: '',
+      relativeTimeStart: null,
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleCopy = this.handleKeyDown.bind(this);
     this.setRoom = this.setRoom.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
+    this.toggleTimer = this.toggleTimer.bind(this);
   }
   
 
   handleKeyDown (event) {
     if (!event.shiftKey && event.keyCode === 13) {
-      let text = event.target.value;
+      const text = event.target.value;
 
-      let cursorLocation = event.target.selectionEnd;
-      let { autonomy, horsepower } = countHP(text);
+      const cursorLocation = event.target.selectionEnd;
+      const { autonomy, horsepower } = countHP(text);
 
       this.setState({ autonomy, horsepower });
-      event.target.value = formatNotes(text, cursorLocation);
+      event.target.value = formatNotes(text, cursorLocation, this.state.relativeTimeStart);
     }
   }
 
@@ -50,6 +52,12 @@ class App extends Component {
         ...this.state.links,
         [room]: value
       }
+    });
+  }
+
+  toggleTimer () {
+    this.setState({
+      relativeTimeStart: this.state.relativeTimeStart ? null : Date.now(),
     });
   }
 
@@ -98,6 +106,8 @@ class App extends Component {
           horsepower={this.state.horsepower}
           handleKeyDown={this.handleKeyDown}
           handleNoteChange={(event) => { this.setState({ text: event.target.value }) }}
+          toggleTimer={this.toggleTimer}
+          relativeTimeStart={this.state.relativeTimeStart}
         />    
           
       </div>
