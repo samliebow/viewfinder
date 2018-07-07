@@ -6,19 +6,13 @@ import Setup from './Setup';
 const { countHP, formatNotes } = require('./noteFns');
 
 class App extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       text: '',
       autonomy: 0,
       horsepower: 0,
-      links: {
-        codestitch: '',
-        tlkio: '',
-        zoom: ''
-      },
       show: {
-        setup: true,
         prompt: true,
         notes: true
       },
@@ -30,9 +24,8 @@ class App extends Component {
     this.setRoom = this.setRoom.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
   }
-  
 
-  handleKeyDown (event) {
+  handleKeyDown(event) {
     if (!event.shiftKey && event.keyCode === 13) {
       let text = event.target.value;
 
@@ -44,7 +37,7 @@ class App extends Component {
     }
   }
 
-  setRoom (room, value) {
+  setRoom(room, value) {
     this.setState({
       links: {
         ...this.state.links,
@@ -53,7 +46,7 @@ class App extends Component {
     });
   }
 
-  toggleShow (section) {
+  toggleShow(section) {
     this.setState({
       show: Object.assign(this.state.show, {
         [section]: !this.state.show[section]
@@ -61,34 +54,35 @@ class App extends Component {
     });
   }
 
-  render () {
+  render() {
     return (
-      <div className='app' style={{ padding: '2em', height: 'calc(100vh - 4em)' }}>
+      <div
+        className="app"
+        style={{ padding: '2em', height: 'calc(100vh - 4em)' }}
+      >
+        <h1
+          style={{
+            fontSize: 24,
+            margin: '0 0 .5em 0',
+            padding: 0
+          }}
+        >
+          HR Interview Noter
+        </h1>
 
-        <h1 style={{
-          fontSize: 24,
-          margin: '0 0 .5em 0',
-          padding: 0
-        }}>HR Interview Noter</h1>
-
-        <Setup
-          show={this.state.show.setup}
-          toggleShow={this.toggleShow}
-          setRoom={this.setRoom}
-          links={this.state.links}/>
-        <hr style={{ display: this.state.show.setup ? 'inline-block' : 'none'}} />
+        <Setup />
 
         <Prompt
           show={this.state.show.prompt}
           toggleShow={this.toggleShow}
           promptSrc={this.state.promptSrc}
-          setPromptSrc={
-            (promptSrc) => {
-              this.setState({ promptSrc });
-            }
-          }
+          setPromptSrc={promptSrc => {
+            this.setState({ promptSrc });
+          }}
         />
-        <hr style={{ display: this.state.show.prompt ? 'inline-block' : 'none'}} />
+        <hr
+          style={{ display: this.state.show.prompt ? 'inline-block' : 'none' }}
+        />
 
         <Notes
           show={this.state.show.notes}
@@ -97,11 +91,13 @@ class App extends Component {
           autonomy={this.state.autonomy}
           horsepower={this.state.horsepower}
           handleKeyDown={this.handleKeyDown}
-          handleNoteChange={(event) => { this.setState({ text: event.target.value }) }}
-        />    
-          
+          handleNoteChange={event => {
+            this.setState({ text: event.target.value });
+          }}
+        />
       </div>
-  )};
-};
+    );
+  }
+}
 
 export default App;
