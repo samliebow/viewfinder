@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
+import LinkRenderer from './LinkRenderer';
 import './Setup.css';
 
 const Input = ({ name, setter }) => (

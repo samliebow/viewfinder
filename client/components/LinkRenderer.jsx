@@ -4,3 +4,5 @@ const LinkRenderer = props => (
     {props.children}
   </a>
 );
+
+export default LinkRenderer;
