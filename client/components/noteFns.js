@@ -42,4 +42,4 @@ const formatNotes = (text, cursorLocation) => {
   return text.join('\n');
 };
 
-export default { countHP, formatNotes };
+module.exports = { countHP, formatNotes };
