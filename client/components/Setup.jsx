@@ -1,37 +1,82 @@
-import React from 'react';
+import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
 import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
+import LinkRenderer from './LinkRenderer';
+import './Setup.css';
 
-const Setup = ({ show, toggleShow, setRoom, links }) => (
-  <div className="setup">
-    <SectionTitle title='Setup' sectionName='setup' toggleShow={toggleShow} />
-    <div style={{ display: show ? 'block' : 'none' }}>
-      <ul>
-
-        <li>
-          1. Go to tlk.io link in <a href="https://google.com/calendar" target="_blank">Google Calendar ⇗</a></li>
-        <li>
-          2. View applicant in <a href="https://hackreactorcore.force.com/hackreactor" target="_blank">Salesforce ⇗</a>
-        </li>
-        <li>
-          3. Pick a prompt that applicant has not been given before. <a href="https://drive.google.com/drive/u/2/folders/0B5_RJCdGH93GdGpKcGx1YVBXVWs" target="_blank" >Prompts ⇗</a></li>
-        <li>
-          4. Open up CodeStitch window. <a href="https://codestitch.io" target="_blank">Codestitch ⇗</a></li>
-        <li> 5. Schedule a Zoom call with the following format: 'FIRSTNAME LASTNAME - {(new Date).toISOString().slice(0, 10)}'.
-          <ul><li>Make sure it's set to record automatically to the cloud.</li></ul>
-        </li>
-      </ul>         
-    
-      <input placeholder="codestitch.io" onChange={(event) => {setRoom('codestitch', event.target.value)}}/>
-      <input placeholder="tlk.io" onChange={(event) => {setRoom('tlkio', event.target.value)}} />
-      <input placeholder="zoom" onChange={(event) => {setRoom('zoom', event.target.value)}} />
-
-      <div style={{ border: '1px solid black', padding: '.5em .5em .5em .5em' }}>          
-        <TlkioScript tlkio={ links.tlkio } codestitch={ links.codestitch } zoom={ links.zoom } />
-      </div> <br />
-    </div>
-    <div style={{ display: show ? 'none' : 'inline-block' }}>&nbsp;... </div>
-  </div>
+const Input = ({ name, setter }) => (
+  <input
+    placeholder={name}
+    onChange={event => {
+      setter(event.target.value, name);
+    }}
+  />
 );
+
+// { show, toggleShow, setRoom, links }
+class Setup extends Component {
+  state = {
+    candidateName: '',
+    rooms: {
+      tlkio: '',
+      codestitch: '',
+      zoom: ''
+    },
+    show: true
+  };
+
+  setName = candidateName => {
+    this.setState({ candidateName });
+  };
+
+  setRoom = (value, name) => {
+    this.setState({
+      rooms: { ...this.state.rooms, [name]: value }
+    });
+  };
+
+  toggleShow = () => {
+    this.setState({ show: !this.state.show });
+  };
+
+  render() {
+    const candidateName = this.state.candidateName || 'FIRST LAST';
+    const currentDate = new Date().toISOString().slice(0, 10);
+
+    const steps = `
+1. Go to tlk.io link in [Google Calendar](https://google.com/calendar)
+2. Follow the steps outlined in the [TI Workflow](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
+    * You'll need to make a copy of the document and rename it to: \`${candidateName} - ${currentDate} - PROMPT NAME\`
+3. Open up a [Codestitch](https://codestitch.io) window.
+4. Schedule a Zoom call with the following format: \`${candidateName} - ${currentDate}\`
+    * Make sure it's set to record automatically to the cloud.`;
+
+    return (
+      <div className="setup">
+        <SectionTitle
+          title="Setup"
+          sectionName="setup"
+          toggleShow={this.toggleShow}
+        />
+        <div style={{ display: this.state.show ? 'block' : 'none' }}>
+          <Input name="candidate name" setter={this.setName} />
+          <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
+          <Input name="codestitch" setter={this.setRoom} />
+          <Input name="tlkio" setter={this.setRoom} />
+          <Input name="zoom" setter={this.setRoom} />
+          <TlkioScript
+            tlkio={this.state.rooms.tlkio}
+            codestitch={this.state.rooms.codestitch}
+            zoom={this.state.rooms.zoom}
+          />
+        </div>
+        <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
+          &nbsp;...{' '}
+        </div>
+      </div>
+    );
+  }
+}
 
 export default Setup;

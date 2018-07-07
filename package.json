@@ -16,11 +16,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "css-loader": "^1.0.0",
     "express": "^4.16.3",
     "moment": "^2.22.0",
     "react": "^16.3.1",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dom": "^16.3.1"
+    "react-dom": "^16.3.1",
+    "react-markdown": "^3.3.4",
+    "style-loader": "^0.21.0"
   },
   "babel": {
     "presets": [
