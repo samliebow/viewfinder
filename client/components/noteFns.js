@@ -1,20 +1,20 @@
 const moment = require('moment');
 
-const countHP = (text) => {
+const countHP = text => {
   let autonomy = 0;
   let horsepower = 0;
 
   for (let i = 0; i + 1 < text.length; i++) {
     if (text[i] === 'a' || text[i] === 'A') {
-      if (text[i+1] === '+') {
+      if (text[i + 1] === '+') {
         autonomy++;
-      } else if (text[i+1] === '-') {
+      } else if (text[i + 1] === '-') {
         autonomy--;
       }
     } else if (text[i] === 'h' || text[i] === 'H') {
-      if (text[i+1] === '+') {
+      if (text[i + 1] === '+') {
         horsepower++;
-      } else if (text[i+1] === '-') {
+      } else if (text[i + 1] === '-') {
         horsepower--;
       }
     }
@@ -31,16 +31,15 @@ const findLineNum = (text, cursorLocation) => {
     }
   }
   return count;
-}
+};
 
 const formatNotes = (text, cursorLocation) => {
   let lineNum = findLineNum(text, cursorLocation);
-  console.log(lineNum);
+
   text = text.split('\n');
-  text[lineNum] = `[${moment().format('LTS')}]: ${text[lineNum]}`
+  text[lineNum] = `[${moment().format('LTS')}]: ${text[lineNum]}`;
 
   return text.join('\n');
-}
+};
 
-
-module.exports = { countHP, formatNotes };
+export default { countHP, formatNotes };
