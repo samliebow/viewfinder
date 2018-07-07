@@ -1,32 +1,59 @@
-import React from 'react';
-import SectionTitle from './SectionTitle'
+import React, { Component } from 'react';
+import SectionTitle from './SectionTitle';
 
-const Prompt = ({show, toggleShow, promptSrc, setPromptSrc }) => (
-  <span>
-    <SectionTitle title='Prompt' sectionName='prompt' toggleShow={toggleShow} />
+class Prompt extends Component {
+  state = {
+    show: true,
+    source: ''
+  };
+
+  setSource = source => {
+    this.setState({ source });
+  };
+
+  toggleShow = () => {
+    this.setState({ show: !this.state.show });
+  };
+
+  render() {
+    const { show, source } = this.state;
+
+    return (
       <span>
-        <input placeholder='Google Drive prompt link'
-          defaultValue={promptSrc}
-          style={{
-            display: show ? 'block' : 'none',
-            width: '100%'
-          }}
-          onKeyDown={
-            (event) => {
+        <SectionTitle
+          title="Prompt"
+          sectionName="prompt"
+          toggleShow={this.toggleShow}
+        />
+        <span>
+          <input
+            placeholder="Google Drive prompt link"
+            defaultValue={source}
+            style={{
+              display: show ? 'block' : 'none',
+              width: '100%'
+            }}
+            onKeyDown={event => {
               if (event.keyCode === 13) {
-                setPromptSrc(event.target.value);
+                this.setSource(event.target.value);
               }
-        }} />
-        <iframe
-          style={{
-            display:  show ? 'block' : 'none',
-            height: '60%',
-            width: '100%'
-        }}
-        src={promptSrc} />
+            }}
+          />
+          <iframe
+            style={{
+              display: show ? 'block' : 'none',
+              height: '60%',
+              width: '100%'
+            }}
+            src={source}
+          />
+        </span>
+        <div style={{ display: show ? 'none' : 'inline-block' }}>
+          &nbsp;...{' '}
+        </div>
       </span>
-    <div style={{ display: show ? 'none' : 'inline-block' }}>&nbsp;... </div>
-  </span>
-);
+    );
+  }
+}
 
 export default Prompt;
