@@ -8,7 +8,8 @@ class Notes extends Component {
     text: '',
     autonomy: 0,
     horsepower: 0,
-    show: true
+    show: true,
+    relativeTimeStart: null
   };
 
   handleKeyDown = event => {
@@ -19,7 +20,11 @@ class Notes extends Component {
       let { autonomy, horsepower } = countHP(text);
 
       this.setState({ autonomy, horsepower });
-      event.target.value = formatNotes(text, cursorLocation);
+      event.target.value = formatNotes(
+        text,
+        cursorLocation,
+        this.state.relativeTimeStart
+      );
     }
   };
 
@@ -31,8 +36,14 @@ class Notes extends Component {
     this.setState({ show: !this.state.show });
   };
 
+  toggleTimer = () => {
+    this.setState({
+      relativeTimeStart: this.state.relativeTimeStart ? null : Date.now()
+    });
+  };
+
   render() {
-    const { text, horsepower, autonomy, show } = this.state;
+    const { text, horsepower, autonomy, show, relativeTimeStart } = this.state;
 
     return (
       <div className="Notes" style={{ marginBottom: '2em' }}>
@@ -53,6 +64,9 @@ class Notes extends Component {
             onChange={this.handleNoteChange}
           />
         </span>
+        <button style={{ float: 'right' }} onClick={this.toggleTimer}>
+          {relativeTimeStart ? 'Stop' : 'Start'} relative timestamping
+        </button>
         <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
           &nbsp;...{' '}
         </div>

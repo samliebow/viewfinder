@@ -33,12 +33,22 @@ const findLineNum = (text, cursorLocation) => {
   return count;
 };
 
-const formatNotes = (text, cursorLocation) => {
+const formatNotes = (text, cursorLocation, relativeTimeStart) => {
   let lineNum = findLineNum(text, cursorLocation);
-
   text = text.split('\n');
-  text[lineNum] = `[${moment().format('LTS')}]: ${text[lineNum]}`;
-
+  let time;
+  if (relativeTimeStart) {
+    const elapsed = moment.duration(Date.now() - relativeTimeStart);
+    const [h, m, s] = [
+      elapsed.hours(),
+      elapsed.minutes(),
+      elapsed.seconds()
+    ].map(el => `${el}`.padStart(2, '0'));
+    time = `${h}:${m}:${s}`;
+  } else {
+    time = moment().format('LTS');
+  }
+  text[lineNum] = `[${time}]: ${text[lineNum]}`;
   return text.join('\n');
 };
 
