@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ReactMarkdown from 'react-markdown';
+import LinkRenderer from './LinkRenderer';
 
 const removeHttp = link => {
   if (link.substring(0, 7) === 'http://') {
