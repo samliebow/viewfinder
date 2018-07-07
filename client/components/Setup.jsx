@@ -13,13 +13,6 @@ const Input = ({ name, setter }) => (
   />
 );
 
-// Renderer for ReactMarkdown links
-const LinkRenderer = props => (
-  <a href={props.href} target="_blank">
-    {props.children}
-  </a>
-);
-
 // { show, toggleShow, setRoom, links }
 class Setup extends Component {
   state = {
