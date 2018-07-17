@@ -9,3 +9,7 @@ bundle.js
 client/prompts/*.js
 
 deprecated/
+
+apiKey.js
+
+apiNotes.js

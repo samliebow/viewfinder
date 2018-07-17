@@ -1,7 +1,5 @@
-const webpack = require('webpack');
-
 module.exports = {
-  entry: [__dirname + '/client/components/App.jsx'],
+  entry: ['babel-polyfill', __dirname + '/client/components/App.jsx'],
   module: {
     rules: [
       {
