@@ -27,8 +27,8 @@ class Prompt extends Component {
         />
         <span>
           <input
-            placeholder="Google Drive prompt link"
-            defaultValue={source}
+            placeholder={"Google Drive prompt link"}
+            defaultValue={this.props.promptUrl}
             style={{
               display: show ? 'block' : 'none',
               width: '100%'
@@ -39,13 +39,20 @@ class Prompt extends Component {
               }
             }}
           />
+        </span>
+        {['Version Control', 'MRP', 'Book Library'].map(prompt => (
+          <button id={prompt} key={prompt} onClick={this.props.copyPrompt}>
+            Use {prompt}
+          </button>
+        ))}
+        <span>
           <iframe
             style={{
               display: show ? 'block' : 'none',
               height: '60%',
               width: '100%'
             }}
-            src={source}
+            src={source || this.props.promptUrl}
           />
         </span>
         <div style={{ display: show ? 'none' : 'inline-block' }}>
