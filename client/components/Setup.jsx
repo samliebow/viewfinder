@@ -6,9 +6,10 @@ import TlkioScript from './TlkioScript';
 import LinkRenderer from './LinkRenderer';
 import './Setup.css';
 
-const Input = ({ name, setter }) => (
+const Input = ({ name, setter, value }) => (
   <input
     placeholder={name}
+    value={value}
     onChange={event => {
       setter(event.target.value, name);
     }}
@@ -88,8 +89,8 @@ class Setup extends Component {
     const currentDate = new Date().toISOString().slice(0, 10);
 
     const steps = `
-1. Go to tlk.io link in [Google Calendar](https://google.com/calendar)
-2. Follow the steps outlined in the [TI Workflow](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
+1. Go to [the tlk.io link](${this.state.rooms.tlkio}) for the interview.
+2. Follow the steps outlined in the [TI Workflow.](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
     * You'll need to make a copy of the document and rename it to: \`${candidateName} - ${currentDate} - PROMPT NAME\`
 3. Open up a [Codestitch](https://codestitch.io) window.
 4. Schedule a Zoom call with the following format: \`${candidateName} - ${currentDate}\`
@@ -103,15 +104,16 @@ class Setup extends Component {
           toggleShow={this.toggleShow}
         />
         <div style={{ display: this.state.show ? 'block' : 'none' }}>
-          <Input name="candidate name" setter={this.setName} />
           <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
           <Input name="codestitch" setter={this.setRoom} />
-          <Input name="tlkio" setter={this.setRoom} />
+          <Input name="tlkio" setter={this.setRoom} value={this.state.rooms.tlkio}/>
           <Input name="zoom" setter={this.setRoom} />
           <TlkioScript
             tlkio={this.state.rooms.tlkio}
             codestitch={this.state.rooms.codestitch}
             zoom={this.state.rooms.zoom}
+            name={this.state.candidateName}
+            email={this.state.candidateEmail}
           />
         </div>
         <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>

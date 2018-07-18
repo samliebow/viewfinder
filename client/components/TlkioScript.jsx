@@ -18,7 +18,7 @@ const Link = ({ link }) => (
   </a>
 );
 
-const TlkioScript = ({ codestitch, tlkio, zoom }) => (
+const TlkioScript = ({ codestitch, tlkio, zoom, name, email }) => (
   <div className="tlkio-script">
     <ReactMarkdown
       source={`
@@ -26,7 +26,7 @@ const TlkioScript = ({ codestitch, tlkio, zoom }) => (
 
 \`Hi! We’ll get started in just a few minutes. To get us started, can you please write your name and email in a comment in this codestitch.io pad?\` [\`${codestitch}\`](${codestitch})
 
-\`(5 minutes no-show): Hi - It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
+\`(Send to ${email} if they don't show within 5 min): Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
 
 \`Here’s the link to our video room:\` [\`${zoom}\`](${zoom})\`. Once you have Zoom downloaded please click the link to join. \`
 `}
