@@ -40,11 +40,12 @@ class Prompt extends Component {
             }}
           />
         </span>
-        {['Version Control', 'MRP', 'Book Library'].map(prompt => (
+        {this.props.promptButtonsShown ? 
+          ['Version Control', 'MRP', 'Book Library'].map(prompt => (
           <button id={prompt} key={prompt} onClick={this.props.copyPrompt}>
             Use {prompt}
-          </button>
-        ))}
+          </button>)) 
+          : (this.props.promptUrl ? null : 'Please wait, prompt loading...')}
         <span>
           <iframe
             style={{

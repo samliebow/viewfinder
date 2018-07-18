@@ -14,6 +14,7 @@ class App extends Component {
       zoom: ''
     },
     promptUrl: '',
+    promptButtonsShown: true,
   };
 
   componentDidMount() {
@@ -39,6 +40,7 @@ class App extends Component {
   }
 
   copyPrompt = async event => {
+    this.setState({ promptButtonsShown: false });
     const promptName = event.target.id;
     const promptId = {
       'Version Control': '1tTkmIotuBEP8PwvpxmTaTHKDDUCb8i0ikmTfm8D8oA4',
@@ -132,6 +134,7 @@ class App extends Component {
         <Prompt 
           copyPrompt={this.copyPrompt}
           promptUrl={this.state.promptUrl}
+          promptButtonsShown={this.state.promptButtonsShown}
         />
 
         <Notes />
