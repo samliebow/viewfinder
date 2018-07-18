@@ -54,7 +54,7 @@ class App extends Component {
       },
     });
     const copyId = copyMetadata.result.id;
-    await gapi.client.request({
+    const publishPromise = gapi.client.request({
       path: `https://www.googleapis.com/drive/v3/files/${copyId}/revisions/1`,
       method: 'PATCH',
       body: { 
@@ -63,7 +63,7 @@ class App extends Component {
         publishedOutsideDomain: true,
       },
     });
-    const result = await gapi.client.request({
+    const editPromise = gapi.client.request({
       path: `https://www.googleapis.com/drive/v3/files/${copyId}/permissions`,
       method: 'POST',
       body: {
@@ -72,6 +72,7 @@ class App extends Component {
         allowFileDiscovery: false,
       },
     });
+    await Promise.all([publishPromise, editPromise]);
     const promptUrl = `https://docs.google.com/document/d/${copyId}/edit?usp=sharing`;
     this.setState({ promptUrl });
   };
