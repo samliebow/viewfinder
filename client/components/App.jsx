@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
@@ -52,7 +53,7 @@ class App extends Component {
       path: `https://www.googleapis.com/drive/v3/files/${promptId}/copy`,
       method: 'POST',
       body: {
-        name: `${this.state.candidateName} - ${this.getDateString()} - ${promptName}`,
+        name: `${this.state.candidateName} - ${moment().format('YYYY-MM-DD')} - ${promptName}`,
         parents: ['root'],
       },
     });
@@ -92,7 +93,7 @@ class App extends Component {
         singleEvents: true,
         orderBy: 'startTime',
         q: '#Interview Online with',
-        timeMin: new Date((new Date() - 6e5)).toISOString(), // 10 minutes ago
+        timeMin: moment().subtract(10, 'minutes').toISOString(),
       },
     });
     const soonestInterviewData = interviewsData.result.items[0];
@@ -103,15 +104,6 @@ class App extends Component {
     this.setState({ rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }) });
   };
 
-  getDateString = () => {
-    const now = new Date();
-    const strArr = [];
-    strArr.push(now.getFullYear());
-    strArr.push(`${now.getMonth() + 1}`.padStart(2, '0'));
-    strArr.push(now.getDate());
-    return strArr.join('-');
-  };
-
   handleLogin = () => {
     this.setState({ loggedIn: true, });
     this.getCalendarData();
@@ -120,11 +112,11 @@ class App extends Component {
 
   render() {
     const { 
-      loggedIn, 
-      candidateName, 
-      candidateEmail, 
-      rooms, 
-      promptUrl, 
+      loggedIn,
+      candidateName,
+      candidateEmail,
+      rooms,
+      promptUrl,
       promptButtonsShown,
     } =  this.state;
     return (

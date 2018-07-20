@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import ReactMarkdown from 'react-markdown';
 import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
@@ -37,7 +38,7 @@ class Setup extends Component {
 
   render() {
     const candidateName = this.props.candidateName || 'FIRST LAST';
-    const currentDate = new Date().toISOString().slice(0, 10);
+    const currentDate = moment().format('YYYY-MM-DD');
 
     const steps = `
 1. Go to [the tlk.io link](${this.props.rooms.tlkio}) for the interview.
