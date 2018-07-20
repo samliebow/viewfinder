@@ -31,7 +31,7 @@ class App extends Component {
         // discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
         clientId: '695004460995-m8hbtlfkktf3d6opnafeer5j0dsbmn72.apps.googleusercontent.com',
         scope: scopes.join(' '),
-      });
+      }).catch(err => alert(`Something went wrong with setting up Google OAuth: ${err}. You should probably refresh.`));
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
       this.GoogleAuth.isSignedIn.get() ?
@@ -39,7 +39,7 @@ class App extends Component {
         this.GoogleAuth.signIn().catch(({ error }) => 
           error === 'popup_closed_by_user' || error === 'access_denied' ?
             alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
-            alert(`There was a problem with login. You should probably refresh.`));
+            alert(`There was a problem with login: ${error}. You should probably refresh.`));
     });
   }
 
@@ -51,79 +51,96 @@ class App extends Component {
       'MRP': '196ClAKfTFgO8gWs3O57QGcddVnWiS9RNtAXpVuEcrxU',
       'Book Library': '1dDybGPnNcNr3kE9rJMB-_MmQAtFCTujCFauD0KrPNfY',
     }[promptName];
-    const copyMetadata = await gapi.client.request({
-      path: `https://www.googleapis.com/drive/v3/files/${promptId}/copy`,
-      method: 'POST',
-      body: {
-        name: `${this.state.candidateName} - ${moment().format('YYYY-MM-DD')} - ${promptName}`,
-        parents: ['root'],
-      },
-    });
-    const copyId = copyMetadata.result.id;
-    const publishPromise = gapi.client.request({
-      path: `https://www.googleapis.com/drive/v3/files/${copyId}/revisions/1`,
-      method: 'PATCH',
-      body: { 
-        published: true,
-        publishAuto: true,
-        publishedOutsideDomain: true,
-      },
-    });
-    const editPromise = gapi.client.request({
-      path: `https://www.googleapis.com/drive/v3/files/${copyId}/permissions`,
-      method: 'POST',
-      body: {
-        role: 'writer',
-        type: 'anyone',
-        allowFileDiscovery: false,
-      },
-    });
-    await Promise.all([publishPromise, editPromise]);
-    const promptUrl = `https://docs.google.com/document/d/${copyId}/edit?usp=sharing`;
-    this.setState({ promptUrl });
+    try {
+      const copyMetadata = await gapi.client.request({
+        path: `https://www.googleapis.com/drive/v3/files/${promptId}/copy`,
+        method: 'POST',
+        body: {
+          name: `${this.state.candidateName} - ${moment().format('YYYY-MM-DD')} - ${promptName}`,
+          parents: ['root'],
+        },
+      });
+      const copyId = copyMetadata.result.id;
+      const publishPromise = gapi.client.request({
+        path: `https://www.googleapis.com/drive/v3/files/${copyId}/revisions/1`,
+        method: 'PATCH',
+        body: { 
+          published: true,
+          publishAuto: true,
+          publishedOutsideDomain: true,
+        },
+      });
+      const editPromise = gapi.client.request({
+        path: `https://www.googleapis.com/drive/v3/files/${copyId}/permissions`,
+        method: 'POST',
+        body: {
+          role: 'writer',
+          type: 'anyone',
+          allowFileDiscovery: false,
+        },
+      });
+      await Promise.all([publishPromise, editPromise]);
+      const promptUrl = `https://docs.google.com/document/d/${copyId}/edit?usp=sharing`;
+      this.setState({ promptUrl });
+    } catch (error) {
+      console.error(error);
+      this.setState({ promptButtonsShown: true })
+      error.status === 401 ? 
+        alert(`You have to be logged in.`) :
+        alert(`
+        Couldn't create the prompt document successfully.
+        You can still use this app:
+        just copy the prompt manually (see TI workflow), 
+        share it so that anyone with the link can edit, 
+        and paste the link into the prompt section below.`);
+    }
   };
 
   getCalendarData = async () => {
-    const {result: { items: calendars } } = await gapi.client.request({
-      path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-    });
-    // Get logged-in user's name from the email on their primary calendar.
-    // We could get this from the HIR calendar too, but it might be out-of-date
-    // if they just inherited the calendar from the HIR they're replacing.
-    const loggedIn = calendars.filter(calendar => calendar.primary)[0].id
-      // formatting from e.g. 'samuel.liebow@hackreactor.com' to 'Samuel Liebow'
-      .split('@')[0].split('.').map(name => name[0].toUpperCase() + name.slice(1))[0];
-    this.setState({ loggedIn });
-
-    let hirCalendarId;
     try {
-      hirCalendarId = calendars.filter(
-        ({ summary }) => summary.includes('HiR'))[0].id;
-    } catch (err) {
-      alert(`You don't seem to be using your Hack Reactor account! Just click OK and then select the right account.`);
-      this.GoogleAuth.disconnect();
-      window.location.reload();
-    }
+      const {result: { items: calendars } } = await gapi.client.request({
+        path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
+      });
+      // Get logged-in user's name from the email on their primary calendar.
+      // We could get this from the HIR calendar too, but it might be out-of-date
+      // if they just inherited the calendar from the HIR they're replacing.
+      const loggedIn = calendars.filter(calendar => calendar.primary)[0].id
+        // formatting from e.g. 'samuel.liebow@hackreactor.com' to 'Samuel Liebow'
+        .split('@')[0].split('.').map(name => name[0].toUpperCase() + name.slice(1))[0];
+      this.setState({ loggedIn });
 
-    const {result: {items: [interview] } } = await gapi.client.request({
-      path: `https://www.googleapis.com/calendar/v3/calendars/${hirCalendarId}/events`,
-      params: {
-        singleEvents: true,
-        orderBy: 'startTime',
-        q: '#Interview Online with',
-        timeMin: moment().subtract(10, 'minutes').toISOString(),
-      },
-    });
-    const { description, start } = interview;
-    const soonestInterviewDetails = description.split('\n').slice(0, 3);
-    const [candidateName, candidateEmail, tlkioLink] = soonestInterviewDetails.map(el => el.split(': ')[1]);
-    const startTime = moment(start);
-    this.setState({
-      startTime,
-      candidateName,
-      candidateEmail,
-      rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }),
-    });
+      let hirCalendarId;
+      try {
+        hirCalendarId = calendars.filter(
+          ({ summary }) => summary.includes('HiR'))[0].id;
+      } catch (err) {
+        alert(`You don't seem to be using your Hack Reactor account! Just click OK and then select the right account.`);
+        this.GoogleAuth.disconnect();
+        window.location.reload();
+      }
+
+      const {result: {items: [interview] } } = await gapi.client.request({
+        path: `https://www.googleapis.com/calendar/v3/calendars/${hirCalendarId}/events`,
+        params: {
+          singleEvents: true,
+          orderBy: 'startTime',
+          q: '#Interview Online with',
+          timeMin: moment().subtract(10, 'minutes').toISOString(),
+        },
+      });
+      const { description, start } = interview;
+      const soonestInterviewDetails = description.split('\n').slice(0, 3);
+      const [candidateName, candidateEmail, tlkioLink] = soonestInterviewDetails.map(el => el.split(': ')[1]);
+      const startTime = moment(start);
+      this.setState({
+        startTime,
+        candidateName,
+        candidateEmail,
+        rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }),
+      });
+    } catch (err) {
+      alert(`There was a problem retrieving information from your calendar: ${err}. You'll have to do it manually.`);
+    }
   };
 
   handleLogin = (loggingIn = true) => {
