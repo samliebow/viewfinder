@@ -37,16 +37,31 @@ class Setup extends Component {
   };
 
   render() {
-    const candidateName = this.props.candidateName || 'FIRST LAST';
+    const {
+      loggedIn,
+      logout,
+      startTime,
+      candidateName,
+      candidateEmail,
+      rooms: {
+        tlkio,
+        codestitch,
+        zoom,
+      },
+    } = this.props;
     const currentDate = moment().format('YYYY-MM-DD');
 
     const steps = `
-1. Go to [the tlk.io link](${this.props.rooms.tlkio}) for the interview.
-2. Follow the steps outlined in the [TI Workflow.](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
-    * You'll need to make a copy of the document and rename it to: \`${candidateName} - ${currentDate} - PROMPT NAME\`
-3. Open up a [Codestitch](https://codestitch.io) window.
-4. Schedule a Zoom call with the following format: \`${candidateName} - ${currentDate}\`
-    * Make sure it's set to record automatically to the cloud.`;
+1. Search for ${candidateEmail || 'the candidate\'s email'} in the [Technical Interview Decisions spreadsheet](https://docs.google.com/spreadsheets/d/1ObVQGqm894fzjeM5vcG2qysYKDng4g8rtgyIwS3vJh8/edit#gid=391982378) (both 'Form Responses' and 'TI History'). 
+2. Choose the first prompt they haven't gotten (in order: Version Control, MRP, Book Library). Click that button below.
+3. Open up a [Codestitch](https://codestitch.io) window, and paste the URL into the input field below.
+4. Schedule a Zoom call named \`${candidateName} - ${currentDate}\` and paste the join link into the input field below.
+    * Make sure it's set to record automatically to the cloud.
+5. Go to [the tlk.io link](${tlkio}) and conduct the interview, using the script snippets below.
+6. Move the completed prompt document from [My Drive](https://drive.google.com/drive/my-drive) to the appropriate month's folder [here](https://drive.google.com/drive/folders/0B5_RJCdGH93GdW1fMWMzQlg3VEE).
+7. Fill out the [Technical Interview Decisions Form](https://goo.gl/forms/IODn7sw3jtpiUq2n1).
+8. If you have any questions, reference the [TI Workflow.](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
+`;
 
     return (
       <div className="setup">
@@ -56,22 +71,22 @@ class Setup extends Component {
           toggleShow={this.toggleShow}
         />
         <div style={{ display: this.state.show ? 'block' : 'none' }}>
-          {this.props.startTime ? 
-            <div> Hi {this.props.loggedIn}! Your interview with {this.props.candidateName} starts at {this.props.startTime.format('h:mm')}. 
-            <br />(Not {this.props.loggedIn}? <a href='#' onClick={this.props.logout}>Click here.</a>)
+          {startTime ? 
+            <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('h:mm')}. 
+            <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
             </div> :
-            <div> {this.props.loggedIn ? 'Fetching data...' : `You're not logged in.`} </div> }
+            <div> {loggedIn ? 'Fetching data...' : `You're not logged in.`} </div> }
           <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
           <Input name="codestitch" setter={this.setRoom} />
-          <Input name="tlkio" setter={this.setRoom} value={this.props.rooms.tlkio}/>
+          <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
           <Input name="zoom" setter={this.setRoom} />
           <TlkioScript
-            tlkio={this.props.rooms.tlkio}
-            codestitch={this.props.rooms.codestitch}
-            zoom={this.props.rooms.zoom}
-            name={this.props.candidateName}
-            email={this.props.candidateEmail}
-            startTime={this.props.startTime}
+            tlkio={tlkio}
+            codestitch={codestitch}
+            zoom={zoom}
+            name={candidateName}
+            email={candidateEmail}
+            startTime={startTime}
           />
         </div>
         <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
