@@ -36,7 +36,10 @@ class App extends Component {
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
       this.GoogleAuth.isSignedIn.get() ?
         this.handleLogin() :
-        this.GoogleAuth.signIn();
+        this.GoogleAuth.signIn().catch(({ error }) => 
+          error === 'popup_closed_by_user' || error === 'access_denied' ?
+            alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
+            alert(`There was a problem with login. You should probably refresh.`));
     });
   }
 
@@ -92,8 +95,16 @@ class App extends Component {
       .split('@')[0].split('.').map(name => name[0].toUpperCase() + name.slice(1))[0];
     this.setState({ loggedIn });
 
-    const hirCalendarId = calendars.filter(
-      ({ summary }) => summary.includes('HiR'))[0].id;
+    let hirCalendarId;
+    try {
+      hirCalendarId = calendars.filter(
+        ({ summary }) => summary.includes('HiR'))[0].id;
+    } catch (err) {
+      alert(`You don't seem to be using your Hack Reactor account! Just click OK and then select the right account.`);
+      this.GoogleAuth.disconnect();
+      window.location.reload();
+    }
+
     const {result: {items: [interview] } } = await gapi.client.request({
       path: `https://www.googleapis.com/calendar/v3/calendars/${hirCalendarId}/events`,
       params: {
@@ -123,7 +134,6 @@ class App extends Component {
       this.getCalendarData();
     }
   }
-
 
   render() {
     const { 
