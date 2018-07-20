@@ -57,7 +57,9 @@ class Setup extends Component {
         />
         <div style={{ display: this.state.show ? 'block' : 'none' }}>
           {this.props.startTime ? 
-            <div> Your interview with {this.props.candidateName} starts at {this.props.startTime.format('h:mm')}. </div> :
+            <div> Hi {this.props.loggedIn}! Your interview with {this.props.candidateName} starts at {this.props.startTime.format('h:mm')}. 
+            <br />(Not {this.props.loggedIn}? <a href='#' onClick={this.props.logout}>Click here.</a>)
+            </div> :
             <div> {this.props.loggedIn ? 'Fetching data...' : `You're not logged in.`} </div> }
           <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
           <Input name="codestitch" setter={this.setRoom} />

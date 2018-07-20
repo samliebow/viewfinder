@@ -7,7 +7,7 @@ import apiKey from '../../apiKey.js';
 
 class App extends Component {
   state = {
-    loggedIn: false,
+    loggedIn: null,
     startTime: '',
     candidateName: '',
     candidateEmail: '',
@@ -34,11 +34,9 @@ class App extends Component {
       });
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
-      if (this.GoogleAuth.isSignedIn.get()) {
-        this.handleLogin();
-      } else {
+      this.GoogleAuth.isSignedIn.get() ?
+        this.handleLogin() :
         this.GoogleAuth.signIn();
-      }
     });
   }
 
@@ -83,13 +81,21 @@ class App extends Component {
   };
 
   getCalendarData = async () => {
-    const calendarsData = await gapi.client.request({
+    const {result: { items: calendars } } = await gapi.client.request({
       path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
     });
-    const calendarId = calendarsData.result.items.filter(
+    // Get logged-in user's name from the email on their primary calendar.
+    // We could get this from the HIR calendar too, but it might be out-of-date
+    // if they just inherited the calendar from the HIR they're replacing.
+    const loggedIn = calendars.filter(calendar => calendar.primary)[0].id
+      // formatting from e.g. 'samuel.liebow@hackreactor.com' to 'Samuel Liebow'
+      .split('@')[0].split('.').map(name => name[0].toUpperCase() + name.slice(1))[0];
+    this.setState({ loggedIn });
+
+    const hirCalendarId = calendars.filter(
       ({ summary }) => summary.includes('HiR'))[0].id;
-    const interviewsData = await gapi.client.request({
-      path: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`,
+    const {result: {items: [interview] } } = await gapi.client.request({
+      path: `https://www.googleapis.com/calendar/v3/calendars/${hirCalendarId}/events`,
       params: {
         singleEvents: true,
         orderBy: 'startTime',
@@ -97,7 +103,7 @@ class App extends Component {
         timeMin: moment().subtract(10, 'minutes').toISOString(),
       },
     });
-    const { description, start } = interviewsData.result.items[0];
+    const { description, start } = interview;
     const soonestInterviewDetails = description.split('\n').slice(0, 3);
     const [candidateName, candidateEmail, tlkioLink] = soonestInterviewDetails.map(el => el.split(': ')[1]);
     const startTime = moment(start);
@@ -109,9 +115,13 @@ class App extends Component {
     });
   };
 
-  handleLogin = () => {
-    this.setState({ loggedIn: true, });
-    this.getCalendarData();
+  handleLogin = (loggingIn = true) => {
+    if (!loggingIn) {
+      window.location.reload();
+    } else {
+      this.setState({ loggedIn: true, });
+      this.getCalendarData();
+    }
   }
 
 
@@ -139,6 +149,7 @@ class App extends Component {
 
         <Setup
           loggedIn={loggedIn}
+          logout={this.GoogleAuth && this.GoogleAuth.disconnect.bind(this.GoogleAuth)}
           startTime={startTime}
           candidateName={candidateName}
           candidateEmail={candidateEmail}
