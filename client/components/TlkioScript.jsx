@@ -18,15 +18,15 @@ const Link = ({ link }) => (
   </a>
 );
 
-const TlkioScript = ({ codestitch, tlkio, zoom, name, email }) => (
+const TlkioScript = ({ codestitch, tlkio, zoom, name, email, startTime }) => (
   <div className="tlkio-script">
     <ReactMarkdown
       source={`
-\`Hi - if you are present, please input your name in the field below and press enter to join the chat. Then post a message so I know you’re here!\`
+\`Hi ${name.split(' ')[0]} - if you are present, please input your name in the field below and press enter to join the chat. Then post a message so I know you’re here!\`
 
 \`Hi! We’ll get started in just a few minutes. To get us started, can you please write your name and email in a comment in this codestitch.io pad?\` [\`${codestitch}\`](${codestitch})
 
-\`(Send to ${email} if they don't show within 5 min): Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
+\`(Send to ${email || 'their email'} if they don't show ${startTime ? 'by ' + startTime.add(5, 'minutes').format('h:mm') : 'within 5 min'}): Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
 
 \`Here’s the link to our video room:\` [\`${zoom}\`](${zoom})\`. Once you have Zoom downloaded please click the link to join. \`
 `}

@@ -56,7 +56,9 @@ class Setup extends Component {
           toggleShow={this.toggleShow}
         />
         <div style={{ display: this.state.show ? 'block' : 'none' }}>
-          {this.props.loggedIn ? (<div> You're logged in! </div>) : <div> You're not logged in. </div>}
+          {this.props.startTime ? 
+            <div> Your interview with {this.props.candidateName} starts at {this.props.startTime.format('h:mm')}. </div> :
+            <div> {this.props.loggedIn ? 'Fetching data...' : `You're not logged in.`} </div> }
           <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
           <Input name="codestitch" setter={this.setRoom} />
           <Input name="tlkio" setter={this.setRoom} value={this.props.rooms.tlkio}/>
@@ -67,6 +69,7 @@ class Setup extends Component {
             zoom={this.props.rooms.zoom}
             name={this.props.candidateName}
             email={this.props.candidateEmail}
+            startTime={this.props.startTime}
           />
         </div>
         <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>

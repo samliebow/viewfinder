@@ -8,6 +8,7 @@ import apiKey from '../../apiKey.js';
 class App extends Component {
   state = {
     loggedIn: false,
+    startTime: '',
     candidateName: '',
     candidateEmail: '',
     rooms: {
@@ -96,12 +97,16 @@ class App extends Component {
         timeMin: moment().subtract(10, 'minutes').toISOString(),
       },
     });
-    const soonestInterviewData = interviewsData.result.items[0];
-    const soonestInterviewDetails = soonestInterviewData.description.split('\n').slice(0, 3);
+    const { description, start } = interviewsData.result.items[0];
+    const soonestInterviewDetails = description.split('\n').slice(0, 3);
     const [candidateName, candidateEmail, tlkioLink] = soonestInterviewDetails.map(el => el.split(': ')[1]);
-    this.setState({ candidateName });
-    this.setState({ candidateEmail });
-    this.setState({ rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }) });
+    const startTime = moment(start);
+    this.setState({
+      startTime,
+      candidateName,
+      candidateEmail,
+      rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }),
+    });
   };
 
   handleLogin = () => {
@@ -113,6 +118,7 @@ class App extends Component {
   render() {
     const { 
       loggedIn,
+      startTime,
       candidateName,
       candidateEmail,
       rooms,
@@ -133,6 +139,7 @@ class App extends Component {
 
         <Setup
           loggedIn={loggedIn}
+          startTime={startTime}
           candidateName={candidateName}
           candidateEmail={candidateEmail}
           rooms={rooms}
