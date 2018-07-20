@@ -6,6 +6,7 @@ import apiKey from '../../apiKey.js';
 
 class App extends Component {
   state = {
+    loggedIn: false,
     candidateName: '',
     candidateEmail: '',
     rooms: {
@@ -30,9 +31,9 @@ class App extends Component {
         scope: scopes.join(' '),
       });
       this.GoogleAuth = gapi.auth2.getAuthInstance();
-      this.GoogleAuth.isSignedIn.listen(this.getCalendarData);
+      this.GoogleAuth.isSignedIn.listen(this.handleLogin);
       if (this.GoogleAuth.isSignedIn.get()) {
-        this.getCalendarData();
+        this.handleLogin();
       } else {
         this.GoogleAuth.signIn();
       }
@@ -111,8 +112,21 @@ class App extends Component {
     return strArr.join('-');
   };
 
+  handleLogin = () => {
+    this.setState({ loggedIn: true, });
+    this.getCalendarData();
+  }
+
 
   render() {
+    const { 
+      loggedIn, 
+      candidateName, 
+      candidateEmail, 
+      rooms, 
+      promptUrl, 
+      promptButtonsShown,
+    } =  this.state;
     return (
       <div className="app" style={{ padding: '2em', height: 'calc(100vh - 4em)' }}>
         <h1
@@ -125,16 +139,17 @@ class App extends Component {
           HR Interview Noter
         </h1>
 
-        <Setup 
-          candidateName={this.state.candidateName}
-          candidateEmail={this.state.candidateEmail}
-          rooms={this.state.rooms}
+        <Setup
+          loggedIn={loggedIn}
+          candidateName={candidateName}
+          candidateEmail={candidateEmail}
+          rooms={rooms}
         />
 
         <Prompt 
           copyPrompt={this.copyPrompt}
-          promptUrl={this.state.promptUrl}
-          promptButtonsShown={this.state.promptButtonsShown}
+          promptUrl={promptUrl}
+          promptButtonsShown={promptButtonsShown}
         />
 
         <Notes />
