@@ -55,7 +55,7 @@ class Setup extends Component {
 1. Search for ${candidateEmail || 'the candidate\'s email'} in the [Technical Interview Decisions spreadsheet](https://docs.google.com/spreadsheets/d/1ObVQGqm894fzjeM5vcG2qysYKDng4g8rtgyIwS3vJh8/edit#gid=391982378) (both 'Form Responses' and 'TI History'). 
 2. Choose the first prompt they haven't gotten (in order: Version Control, MRP, Book Library). Click that button below.
 3. Open up a [Codestitch](https://codestitch.io) window, and paste the URL into the input field below.
-4. Schedule a Zoom call named \`${candidateName} - ${currentDate}\` and paste the join link into the input field below.
+4. Schedule a Zoom call named \`${candidateName || 'FIRSTNAME LASTNAME'} - ${currentDate}\` and paste the join link into the input field below.
     * Make sure it's set to record automatically to the cloud.
 5. Go to [the tlk.io link](${tlkio}) and conduct the interview, using the script snippets below.
 6. Move the completed prompt document from [My Drive](https://drive.google.com/drive/my-drive) to the appropriate month's folder [here](https://drive.google.com/drive/folders/0B5_RJCdGH93GdW1fMWMzQlg3VEE).
