@@ -34,12 +34,16 @@ class App extends Component {
       }).catch(err => alert(`Something went wrong with setting up Google OAuth: ${err}. You should probably refresh.`));
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
-      this.GoogleAuth.isSignedIn.get() ?
-        this.handleLogin() :
-        this.GoogleAuth.signIn().catch(({ error }) => 
-          error === 'popup_closed_by_user' || error === 'access_denied' ?
-            alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
-            alert(`There was a problem with login: ${error}. You should probably refresh.`));
+      this.GoogleAuth.isSignedIn.get() ? 
+        this.handleLogin() : 
+        this.GoogleAuth.signIn()
+          .catch(err => {
+            console.error(err);
+            const { error } = err; 
+            error === 'popup_closed_by_user' || error === 'access_denied' ?
+                alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
+                alert(`There was a problem with login: ${error}. You should probably refresh.`);
+          });
     });
   }
 
@@ -101,13 +105,6 @@ class App extends Component {
       const {result: { items: calendars } } = await gapi.client.request({
         path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
       });
-      // Get logged-in user's name from the email on their primary calendar.
-      // We could get this from the HIR calendar too, but it might be out-of-date
-      // if they just inherited the calendar from the HIR they're replacing.
-      const loggedIn = calendars.filter(calendar => calendar.primary)[0].id
-        // formatting from e.g. 'samuel.liebow@hackreactor.com' to 'Samuel Liebow'
-        .split('@')[0].split('.').map(name => name[0].toUpperCase() + name.slice(1))[0];
-      this.setState({ loggedIn });
 
       let hirCalendarId;
       try {
@@ -147,7 +144,8 @@ class App extends Component {
     if (!loggingIn) {
       window.location.reload();
     } else {
-      this.setState({ loggedIn: true, });
+      const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName().split(' ')[0];
+      this.setState({ loggedIn })
       this.getCalendarData();
     }
   }
