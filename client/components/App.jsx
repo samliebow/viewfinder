@@ -31,7 +31,7 @@ class App extends Component {
         // discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
         clientId: '695004460995-m8hbtlfkktf3d6opnafeer5j0dsbmn72.apps.googleusercontent.com',
         scope: scopes.join(' '),
-      }).catch(err => alert(`Something went wrong with setting up Google OAuth: ${err}. You should probably refresh.`));
+      }).catch(err => alert(`Something went wrong with setting up Google OAuth: ${JSON.stringify(err)}. You should probably refresh.`));
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.logout = this.GoogleAuth.disconnect.bind(this.GoogleAuth);
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
@@ -105,9 +105,10 @@ class App extends Component {
         hirCalendarId = calendars.filter(
           ({ summary }) => summary.includes('HiR'))[0].id;
       } catch (err) {
-        alert(`You don't seem to be using your Hack Reactor account! Just click OK and then select the right account.`);
+        console.error(err);
+        alert(`You don't seem to be using your Hack Reactor account! Just log in again with the right account.`);
         this.GoogleAuth.disconnect();
-        window.location.reload();
+        return;
       }
 
       const {result: {items: [interview] } } = await gapi.client.request({
@@ -130,7 +131,8 @@ class App extends Component {
         rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }),
       });
     } catch (err) {
-      alert(`There was a problem retrieving information from your calendar: ${err}. You'll have to do it manually.`);
+      console.error(err);
+      alert(`There was a problem retrieving information from your calendar; you might have to do it manually. Check the console for more info.`);
     }
   };
 
@@ -163,8 +165,8 @@ class App extends Component {
         console.error(err);
         const { error } = err; 
         error === 'popup_closed_by_user' || error === 'access_denied' ?
-            alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
-            alert(`There was a problem with login: ${error}. You should probably refresh.`);
+            alert(`You don't have to log in, but it makes things much easier. Try again if you want.`) :
+            alert(`There was a problem with login: ${error}. Try again, or refresh.`);
       });
   };
 
