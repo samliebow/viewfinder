@@ -7,7 +7,7 @@ import apiKey from '../../apiKey.js';
 
 class App extends Component {
   state = {
-    loggedIn: null,
+    loggedIn: '',
     startTime: '',
     candidateName: '',
     candidateEmail: '',
@@ -36,15 +36,8 @@ class App extends Component {
       this.logout = this.GoogleAuth.disconnect.bind(this.GoogleAuth);
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
       this.GoogleAuth.isSignedIn.get() ? 
-        this.handleLogin() : 
-        this.GoogleAuth.signIn()
-          .catch(err => {
-            console.error(err);
-            const { error } = err; 
-            error === 'popup_closed_by_user' || error === 'access_denied' ?
-                alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
-                alert(`There was a problem with login: ${error}. You should probably refresh.`);
-          });
+        this.handleLogin() :
+        this.setState({ loggedIn: false });
     });
   }
 
@@ -143,13 +136,37 @@ class App extends Component {
 
   handleLogin = (loggingIn = true) => {
     if (!loggingIn) {
-      window.location.reload();
+      this.setState({
+        loggedIn: false,
+        startTime: '',
+        candidateName: '',
+        candidateEmail: '',
+        rooms: {
+          tlkio: '',
+          codestitch: '',
+          zoom: ''
+        },
+        promptUrl: '',
+        promptButtonsShown: true,
+      });
     } else {
       const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName().split(' ')[0];
       this.setState({ loggedIn })
       this.getCalendarData();
     }
-  }
+  };
+
+  login = () => {
+    // As of this writing (7.22.18), signIn has to be trigged from a click handler to work properly.
+    this.GoogleAuth.signIn()
+      .catch(err => {
+        console.error(err);
+        const { error } = err; 
+        error === 'popup_closed_by_user' || error === 'access_denied' ?
+            alert(`You don't have to log in, but it makes things much easier. Just refresh if you want to log in.`) :
+            alert(`There was a problem with login: ${error}. You should probably refresh.`);
+      });
+  };
 
   render() {
     const { 
@@ -174,6 +191,7 @@ class App extends Component {
         </h1>
 
         <Setup
+          login={this.login}
           loggedIn={loggedIn}
           logout={this.logout}
           startTime={startTime}

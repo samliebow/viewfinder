@@ -38,6 +38,7 @@ class Setup extends Component {
 
   render() {
     const {
+      login,
       loggedIn,
       logout,
       startTime,
@@ -73,9 +74,14 @@ class Setup extends Component {
         <div style={{ display: this.state.show ? 'block' : 'none' }}>
           {startTime ? 
             <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('h:mm')}. 
-            <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
+              <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
             </div> :
-            <div> {loggedIn ? 'Fetching data...' : `You're not logged in.`} </div> }
+            <div> {loggedIn ? 
+              'Fetching data...' :
+              loggedIn === false ?
+                <span> <a href='#' onClick={login}>Click here</a> to log in. </span>:
+                `Checking if you're logged in...`} 
+            </div> }
           <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
           <Input name="codestitch" setter={this.setRoom} />
           <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
