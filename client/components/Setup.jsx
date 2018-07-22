@@ -83,8 +83,8 @@ class Setup extends Component {
                 `Checking if you're logged in...`} 
             </div> }
           <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
-          <Input name="codestitch" setter={this.setRoom} />
           <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
+          <Input name="codestitch" setter={this.setRoom} />
           <Input name="zoom" setter={this.setRoom} />
           <TlkioScript
             tlkio={tlkio}
