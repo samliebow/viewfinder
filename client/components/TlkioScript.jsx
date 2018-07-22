@@ -28,7 +28,7 @@ const TlkioScript = ({ codestitch, tlkio, zoom, name, email, startTime }) => (
 
 \`(Once they've written in the Codestitch:) Here’s the link to our video room:\` [\`${zoom}\`](${zoom})\`. Once you have Zoom downloaded please click the link to join. \`
 
-\`(Send to ${email || 'their email'} if they don't show ${startTime ? 'by ' + startTime.add(5, 'minutes').format('h:mm') : 'within 5 minutes'}:) Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
+\`(Send to ${email || 'their email'} if they don't show ${startTime ? 'by ' + startTime.clone().add(5, 'minutes').format('h:mm') : 'within 5 minutes'}:) Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
 
 `}
       renderers={{ link: LinkRenderer }}
