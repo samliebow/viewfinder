@@ -33,6 +33,7 @@ class App extends Component {
         scope: scopes.join(' '),
       }).catch(err => alert(`Something went wrong with setting up Google OAuth: ${err}. You should probably refresh.`));
       this.GoogleAuth = gapi.auth2.getAuthInstance();
+      this.logout = this.GoogleAuth.disconnect.bind(this.GoogleAuth);
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
       this.GoogleAuth.isSignedIn.get() ? 
         this.handleLogin() : 
@@ -174,7 +175,7 @@ class App extends Component {
 
         <Setup
           loggedIn={loggedIn}
-          logout={this.GoogleAuth && this.GoogleAuth.disconnect.bind(this.GoogleAuth)}
+          logout={this.logout}
           startTime={startTime}
           candidateName={candidateName}
           candidateEmail={candidateEmail}
