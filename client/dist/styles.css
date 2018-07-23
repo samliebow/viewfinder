@@ -16,10 +16,6 @@ h4 {
   margin: 5px 0px 5px;
 }
 
-iframe {
-  background-color: #ffffff;
-}
-
 textarea {
   display: flex;
   height: 10em;
@@ -51,6 +47,16 @@ button {
 
 .promptBtn {
   margin: 5px 5px 5px 0;
+}
+
+.promptUrl {
+  width: 100%;
+}
+
+.prompt {
+  background-color: #ffffff;
+  width: 100%;
+  height: 350px;
 }
 
 #timer {

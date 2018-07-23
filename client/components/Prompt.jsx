@@ -32,7 +32,7 @@ class Prompt extends Component {
             <input
               placeholder={"Google Drive prompt link"}
               defaultValue={promptUrl}
-              style={{ width: '100%' }}
+              className="promptUrl"
               onKeyDown={event => {
                 if (event.keyCode === 13) {
                   this.setSource(event.target.value);
@@ -47,10 +47,7 @@ class Prompt extends Component {
             : (promptSelected && !promptUrl ? 'Please wait, prompt loading...' : null)}
             <span>
               <iframe
-                style={{
-                  height: '60%',
-                  width: '100%'
-                }}
+                className="prompt"
                 src={source || promptUrl}
               />
             </span>
