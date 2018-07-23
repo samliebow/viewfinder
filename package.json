@@ -8,7 +8,7 @@
     "build": "webpack -d",
     "serve-dev": "nodemon server/server.js",
     "build-dev": "webpack -d --watch",
-    "start": "npm run build && open ./client/dist/index.html",
+    "start": "npm run serve & npm run build; open http://lvh.me:3033",
     "start-linux": "npm run build && xdg-open ./client/dist/index.html",
     "start-server": "npm run build && npm run serve",
     "start-dev": "npm run build-dev & npm run serve-dev"
