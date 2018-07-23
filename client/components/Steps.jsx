@@ -22,19 +22,16 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio }) => {
   return (
     <ol>
       <li>Search for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl}>Form Responses</a> spreadsheet.</li>
-        <ul>Interviews scheduled by {candidateName || 'candidate'} before 6/27/18: 
+        <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} before 6/27/18: 
           {matchingRows.length ? matchingRows.map(str => <li>{str}</li>) : ' None.'}
         </ul>
-      <li>Choose the first prompt they haven't gotten (in order: Version Control, MRP, Book Library). Click that button below.</li>
-      <li>Open up a <a href={codestitchUrl}>Codestitch</a> window, and paste the URL into the input field below.</li>
-      <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link into the input field below.</li>
-        <ul>
-          <li> Make sure it's set to record automatically to the cloud. </li>
-        </ul>
-      <li>Go to <a href={tlkio}>the tlk.io link</a> and conduct the interview, using the script snippets below.</li>
-      <li>Move the completed prompt document from <a href={myDriveUrl}>My Drive</a> to the appropriate month's folder <a href={monthFoldersUrl}>here.</a></li>
+      <li>Choose the first prompt they haven't gotten under 'Prompt' below.</li>
+      <li>Open up a <a href={codestitchUrl}>Codestitch</a> pad and paste the URL below.</li>
+      <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
+      <li>Go to <a href={tlkio}>the tlk.io link</a> and conduct the interview using the script snippets below.</li>
+      <li>Move the completed prompt document from <a href={myDriveUrl}>My Drive</a> to <a href={monthFoldersUrl}>this month's folder</a>.</li>
       <li>Fill out the <a href={tiDecisionsUrl}>Technical Interview Decisions Form</a>.</li>
-      <li>If you have any questions, reference the <a href={tiWorkflowUrl}>TI Workflow</a></li>
+      <li>If you have any questions, reference the <a href={tiWorkflowUrl}>TI Workflow</a>.</li>
     </ol>
   );
 };
