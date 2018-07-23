@@ -26,17 +26,13 @@ class Prompt extends Component {
 
     return (
       <div>
-        <SectionTitle
-          title="Prompt"
-          sectionName="prompt"
-          toggleShow={this.toggleShow}
-        />
+        <h4 onClick={this.toggleShow}> Prompt </h4>
         {show ? 
           <div>
             <input
               placeholder={"Google Drive prompt link"}
               defaultValue={promptUrl}
-              style={{ width: '100%' }}
+              className="promptUrl"
               onKeyDown={event => {
                 if (event.keyCode === 13) {
                   this.setSource(event.target.value);
@@ -45,16 +41,13 @@ class Prompt extends Component {
             />
           {loggedIn && !promptSelected ? 
             ['Version Control', 'MRP', 'Book Library'].map(prompt => (
-            <button id={prompt} key={prompt} onClick={copyPrompt}>
+            <button className="promptBtn" id={prompt} key={prompt} onClick={copyPrompt}>
               Use {prompt}
             </button>)) 
             : (promptSelected && !promptUrl ? 'Please wait, prompt loading...' : null)}
             <span>
               <iframe
-                style={{
-                  height: '60%',
-                  width: '100%'
-                }}
+                className="prompt"
                 src={source || promptUrl}
               />
             </span>

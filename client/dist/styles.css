@@ -1,0 +1,70 @@
+html {
+  background-color: #f8f8f8;
+}
+
+h1 {
+  font-size: 24;
+  margin: 0 0 .5em 0;
+  padding: 0;
+}
+
+h4 {
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #0000EE;
+  margin: 5px 0px 5px;
+}
+
+textarea {
+  display: flex;
+  height: 10em;
+  width: calc(100% - .5em + 1px);
+  background-color: #ffffff;
+}
+
+.app {
+  padding: 2em;
+  height: calc(100vh - 4em);
+}
+
+.tlkio-script {
+  padding: 0.5em;
+  border: 1px solid gray;
+  background-color: #ffffff;
+}
+
+.Notes {
+  margin-bottom: 2em;
+}
+
+button {
+  border-radius: 7px;
+  font-weight: bold;
+  background-color: #0288d1;
+  color: black;
+}
+
+.promptBtn {
+  margin: 5px 5px 5px 0;
+}
+
+.promptUrl {
+  width: 100%;
+}
+
+.prompt {
+  background-color: #ffffff;
+  width: 100%;
+  height: 700px;
+}
+
+#timer {
+  float: right;
+}
+
+.room {
+  width: 32%;
+  margin-left: 0.75%;
+  margin-bottom: 5px;
+}

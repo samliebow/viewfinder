@@ -193,16 +193,8 @@ class App extends Component {
       setRoom,
     } = this;
     return (
-      <div className="app" style={{ padding: '2em', height: 'calc(100vh - 4em)' }}>
-        <h1
-          style={{
-            fontSize: 24,
-            margin: '0 0 .5em 0',
-            padding: 0
-          }}
-        >
-          HR Interview Noter
-        </h1>
+      <div className="app">
+        <h1> HR Interview Noter </h1>
 
         <Setup
           {...{ login, loggedIn, logout, startTime, candidateName, candidateEmail, rooms, setRoom }}
