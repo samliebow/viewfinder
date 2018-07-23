@@ -41,7 +41,7 @@ class Prompt extends Component {
             />
           {loggedIn && !promptSelected ? 
             ['Version Control', 'MRP', 'Book Library'].map(prompt => (
-            <button id={prompt} key={prompt} onClick={copyPrompt}>
+            <button className="promptBtn" id={prompt} key={prompt} onClick={copyPrompt}>
               Use {prompt}
             </button>)) 
             : (promptSelected && !promptUrl ? 'Please wait, prompt loading...' : null)}

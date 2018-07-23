@@ -1,3 +1,7 @@
+html {
+  background-color: #f8f8f8;
+}
+
 h1 {
   font-size: 24;
   margin: 0 0 .5em 0;
@@ -36,6 +40,17 @@ textarea {
 
 .Notes {
   margin-bottom: 2em;
+}
+
+button {
+  border-radius: 7px;
+  font-weight: bold;
+  background-color: #0288d1;
+  color: white;
+}
+
+.promptBtn {
+  margin: 5px 5px 5px 0;
 }
 
 #timer {
