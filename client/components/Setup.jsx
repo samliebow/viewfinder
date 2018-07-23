@@ -5,7 +5,6 @@ import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
 import LinkRenderer from './LinkRenderer';
 import Steps from './Steps';
-import './Setup.css';
 
 const Input = ({ name, setter, value }) => (
   <input
@@ -45,11 +44,7 @@ class Setup extends Component {
 
     return (
       <div className="setup">
-        <SectionTitle
-          title="Setup"
-          sectionName="setup"
-          toggleShow={this.toggleShow}
-        />
+        <h4 onClick={this.toggleShow}> Setup </h4>
         {this.state.show ? 
           <div>
             {startTime ? 

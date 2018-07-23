@@ -1,17 +1,11 @@
 import React from 'react';
 
 const SectionTitle = ({ title, sectionName, toggleShow }) => (
-  <strong 
+  <h4 
     onClick={() => { toggleShow(sectionName) }} 
-    style={{
-      display: 'inline-block',
-      cursor: 'pointer',
-      textDecoration: 'underline',
-      color: '#0000EE'
-    }}
   >
     {title}
-  </strong>
+  </h4>
 );
 
 export default SectionTitle;

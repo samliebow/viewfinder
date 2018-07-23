@@ -26,11 +26,7 @@ class Prompt extends Component {
 
     return (
       <div>
-        <SectionTitle
-          title="Prompt"
-          sectionName="prompt"
-          toggleShow={this.toggleShow}
-        />
+        <h4 onClick={this.toggleShow}> Prompt </h4>
         {show ? 
           <div>
             <input

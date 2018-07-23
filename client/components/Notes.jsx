@@ -46,25 +46,16 @@ class Notes extends Component {
     const { text, horsepower, autonomy, show, relativeTimeStart } = this.state;
 
     return (
-      <div className="Notes" style={{ marginBottom: '2em' }}>
-        <SectionTitle
-          title="Notes"
-          sectionName="notes"
-          toggleShow={this.toggleShow}
-        />
+      <div className="Notes">
+        <h4 onClick={this.toggleShow}>Notes</h4>
         {this.state.show ?
           <span>
             <span>
               &nbsp; Autonomy: {autonomy}&nbsp; Horsepower: {horsepower}
-              <button onClick={this.toggleTimer} style={{ float: 'right' }}>
+              <button id="timer" onClick={this.toggleTimer}>
                 {relativeTimeStart ? 'Stop' : 'Start'} relative timestamping
               </button>
               <textarea
-                style={{
-                  display: 'flex',
-                  height: '10em',
-                  width: 'calc(100% - .5em + 1px)'
-                }}
                 onKeyDown={this.handleKeyDown}
                 onChange={this.handleNoteChange}
               />
