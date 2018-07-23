@@ -6,13 +6,6 @@ import TlkioScript from './TlkioScript';
 import LinkRenderer from './LinkRenderer';
 import Steps from './Steps';
 import './Setup.css';
-import tiHistory from '../../tiHistory.js';
-
-const tiRows = tiHistory.split('\n').map(row => row.split(','));
-const searchTiRows = (name, email) => tiRows
-  .filter(([rowName, rowEmail]) => 
-    rowName === (name || null) || rowEmail === (email || null))
-  .map(row => row.join(', '));
 
 const Input = ({ name, setter, value }) => (
   <input
@@ -24,7 +17,6 @@ const Input = ({ name, setter, value }) => (
   />
 );
 
-// { show, toggleShow, setRoom, links }
 class Setup extends Component {
   state = {
     show: true
