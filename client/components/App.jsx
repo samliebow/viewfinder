@@ -120,10 +120,10 @@ class App extends Component {
           timeMin: moment().subtract(10, 'minutes').toISOString(),
         },
       });
-      const { description, start } = interview;
+      const { description, start: { dateTime } } = interview;
       const soonestInterviewDetails = description.split('\n').slice(0, 3);
       const [candidateName, candidateEmail, tlkioLink] = soonestInterviewDetails.map(el => el.split(': ')[1]);
-      const startTime = moment(start);
+      const startTime = moment(dateTime);
       this.setState({
         startTime,
         candidateName,
