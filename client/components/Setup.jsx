@@ -8,6 +8,7 @@ import Steps from './Steps';
 
 const Input = ({ name, setter, value }) => (
   <input
+    className="room"
     placeholder={name}
     value={value}
     onChange={event => {

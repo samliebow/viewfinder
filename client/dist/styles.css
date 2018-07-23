@@ -56,3 +56,9 @@ button {
 #timer {
   float: right;
 }
+
+.room {
+  width: 32%;
+  margin-left: 0.75%;
+  margin-bottom: 5px;
+}
