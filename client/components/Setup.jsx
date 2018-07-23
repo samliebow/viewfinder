@@ -1,39 +1,25 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import ReactMarkdown from 'react-markdown';
 import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
 import LinkRenderer from './LinkRenderer';
+import Steps from './Steps';
 import './Setup.css';
 
-const Input = ({ name, setter }) => (
+const Input = ({ name, setter, value }) => (
   <input
     placeholder={name}
+    value={value}
     onChange={event => {
       setter(event.target.value, name);
     }}
   />
 );
 
-// { show, toggleShow, setRoom, links }
 class Setup extends Component {
   state = {
-    candidateName: '',
-    rooms: {
-      tlkio: '',
-      codestitch: '',
-      zoom: ''
-    },
     show: true
-  };
-
-  setName = candidateName => {
-    this.setState({ candidateName });
-  };
-
-  setRoom = (value, name) => {
-    this.setState({
-      rooms: { ...this.state.rooms, [name]: value }
-    });
   };
 
   toggleShow = () => {
@@ -41,16 +27,21 @@ class Setup extends Component {
   };
 
   render() {
-    const candidateName = this.state.candidateName || 'FIRST LAST';
-    const currentDate = new Date().toISOString().slice(0, 10);
-
-    const steps = `
-1. Go to tlk.io link in [Google Calendar](https://google.com/calendar)
-2. Follow the steps outlined in the [TI Workflow](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
-    * You'll need to make a copy of the document and rename it to: \`${candidateName} - ${currentDate} - PROMPT NAME\`
-3. Open up a [Codestitch](https://codestitch.io) window.
-4. Schedule a Zoom call with the following format: \`${candidateName} - ${currentDate}\`
-    * Make sure it's set to record automatically to the cloud.`;
+    const {
+      login,
+      loggedIn,
+      logout,
+      startTime,
+      candidateName,
+      candidateEmail,
+      rooms: {
+        tlkio,
+        codestitch,
+        zoom,
+      },
+      setRoom,
+    } = this.props;
+    const currentDate = moment().format('YYYY-MM-DD');
 
     return (
       <div className="setup">
@@ -59,21 +50,32 @@ class Setup extends Component {
           sectionName="setup"
           toggleShow={this.toggleShow}
         />
-        <div style={{ display: this.state.show ? 'block' : 'none' }}>
-          <Input name="candidate name" setter={this.setName} />
-          <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
-          <Input name="codestitch" setter={this.setRoom} />
-          <Input name="tlkio" setter={this.setRoom} />
-          <Input name="zoom" setter={this.setRoom} />
-          <TlkioScript
-            tlkio={this.state.rooms.tlkio}
-            codestitch={this.state.rooms.codestitch}
-            zoom={this.state.rooms.zoom}
-          />
-        </div>
-        <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
-          &nbsp;...{' '}
-        </div>
+        {this.state.show ? 
+          <div>
+            {startTime ? 
+              <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('LT')}. 
+                <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
+              </div> :
+              <div> {loggedIn ? 
+                'Fetching data...' :
+                loggedIn === false ?
+                  <span> <a href='#' onClick={login}>Click here</a> to log in. </span>:
+                  `Checking if you're logged in...`} 
+              </div> }
+            <Steps 
+              {...{ candidateName, candidateEmail, currentDate, tlkio }}
+            />
+            <Input name="tlkio" setter={setRoom} value={tlkio}/>
+            <Input name="codestitch" setter={setRoom} />
+            <Input name="zoom" setter={setRoom} />
+            <TlkioScript
+              {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
+            />
+          </div> :
+          <span>
+            &nbsp;...
+          </span>
+        }
       </div>
     );
   }

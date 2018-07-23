@@ -52,24 +52,29 @@ class Notes extends Component {
           sectionName="notes"
           toggleShow={this.toggleShow}
         />
-        <span style={{ display: this.state.show ? 'inline' : 'none' }}>
-          - Autonomy: {autonomy}&nbsp; Horsepower: {horsepower}
-          <textarea
-            style={{
-              display: 'flex',
-              height: '10em',
-              width: 'calc(100% - .5em + 1px)'
-            }}
-            onKeyDown={this.handleKeyDown}
-            onChange={this.handleNoteChange}
-          />
-        </span>
-        <button style={{ float: 'right' }} onClick={this.toggleTimer}>
-          {relativeTimeStart ? 'Stop' : 'Start'} relative timestamping
-        </button>
-        <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
-          &nbsp;...{' '}
-        </div>
+        {this.state.show ?
+          <span>
+            <span>
+              &nbsp; Autonomy: {autonomy}&nbsp; Horsepower: {horsepower}
+              <button onClick={this.toggleTimer} style={{ float: 'right' }}>
+                {relativeTimeStart ? 'Stop' : 'Start'} relative timestamping
+              </button>
+              <textarea
+                style={{
+                  display: 'flex',
+                  height: '10em',
+                  width: 'calc(100% - .5em + 1px)'
+                }}
+                onKeyDown={this.handleKeyDown}
+                onChange={this.handleNoteChange}
+              />
+            </span>
+
+          </span> :
+          <span>
+            &nbsp;...
+          </span>
+        }
       </div>
     );
   }

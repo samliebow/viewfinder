@@ -6,6 +6,7 @@ node_modules/
 
 bundle.js
 
-client/prompts/*.js
+apiKey.js
+apiNotes.js
 
-deprecated/
+tiHistory.js
