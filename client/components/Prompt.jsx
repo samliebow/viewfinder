@@ -17,6 +17,12 @@ class Prompt extends Component {
 
   render() {
     const { show, source } = this.state;
+    const {
+      loggedIn,
+      copyPrompt,
+      promptUrl,
+      promptSelected,
+    } = this.props;
 
     return (
       <div>
@@ -29,7 +35,7 @@ class Prompt extends Component {
           <div>
             <input
               placeholder={"Google Drive prompt link"}
-              defaultValue={this.props.promptUrl}
+              defaultValue={promptUrl}
               style={{ width: '100%' }}
               onKeyDown={event => {
                 if (event.keyCode === 13) {
@@ -37,19 +43,19 @@ class Prompt extends Component {
                 }
               }}
             />
-          {this.props.promptButtonsShown ? 
+          {loggedIn && !promptSelected ? 
             ['Version Control', 'MRP', 'Book Library'].map(prompt => (
-            <button id={prompt} key={prompt} onClick={this.props.copyPrompt}>
+            <button id={prompt} key={prompt} onClick={copyPrompt}>
               Use {prompt}
             </button>)) 
-            : (this.props.promptUrl ? null : 'Please wait, prompt loading...')}
+            : (promptSelected && !promptUrl ? 'Please wait, prompt loading...' : null)}
             <span>
               <iframe
                 style={{
                   height: '60%',
                   width: '100%'
                 }}
-                src={source || this.props.promptUrl}
+                src={source || promptUrl}
               />
             </span>
           </div> :

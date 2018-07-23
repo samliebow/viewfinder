@@ -17,7 +17,7 @@ class App extends Component {
       zoom: ''
     },
     promptUrl: '',
-    promptButtonsShown: true,
+    promptSelected: false,
   };
 
   componentDidMount() {
@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   copyPrompt = async event => {
-    this.setState({ promptButtonsShown: false });
+    this.setState({ promptSelected: true });
     const promptName = event.target.id;
     const promptId = {
       'Version Control': '1tTkmIotuBEP8PwvpxmTaTHKDDUCb8i0ikmTfm8D8oA4',
@@ -149,11 +149,11 @@ class App extends Component {
           zoom: ''
         },
         promptUrl: '',
-        promptButtonsShown: true,
+        promptSelected: false,
       });
     } else {
       const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName().split(' ')[0];
-      this.setState({ loggedIn })
+      this.setState({ loggedIn });
       this.getCalendarData();
     }
   };
@@ -184,7 +184,7 @@ class App extends Component {
       candidateEmail,
       rooms,
       promptUrl,
-      promptButtonsShown,
+      promptSelected,
     } =  this.state;
     const {
       copyPrompt,
@@ -209,7 +209,7 @@ class App extends Component {
         />
         <br />
         <Prompt
-          {...{ copyPrompt, promptUrl, promptButtonsShown }}
+          {...{ loggedIn, copyPrompt, promptUrl, promptSelected }}
         />
         <br />
         <Notes />
