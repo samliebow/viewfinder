@@ -128,7 +128,7 @@ class App extends Component {
         startTime,
         candidateName,
         candidateEmail,
-        rooms: Object.assign({}, this.state.rooms, { tlkio: tlkioLink }),
+        rooms: { ...this.state.rooms, tlkio: tlkioLink },
       });
     } catch (err) {
       console.error(err);
@@ -170,6 +170,12 @@ class App extends Component {
       });
   };
 
+  setRoom = (value, name) => {
+    this.setState({
+      rooms: { ...this.state.rooms, [name]: value },
+    });
+  };
+
   render() {
     const { 
       loggedIn,
@@ -200,6 +206,7 @@ class App extends Component {
           candidateName={candidateName}
           candidateEmail={candidateEmail}
           rooms={rooms}
+          setRoom={this.setRoom}
         />
         <br />
         <Prompt 

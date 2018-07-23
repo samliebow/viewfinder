@@ -39,6 +39,7 @@ class Setup extends Component {
         codestitch,
         zoom,
       },
+      setRoom,
     } = this.props;
     const currentDate = moment().format('YYYY-MM-DD');
 
@@ -64,9 +65,9 @@ class Setup extends Component {
             <Steps 
               {...{ candidateName, candidateEmail, currentDate, tlkio }}
             />
-            <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
-            <Input name="codestitch" setter={this.setRoom} />
-            <Input name="zoom" setter={this.setRoom} />
+            <Input name="tlkio" setter={setRoom} value={tlkio}/>
+            <Input name="codestitch" setter={setRoom} />
+            <Input name="zoom" setter={setRoom} />
             <TlkioScript
               {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
             />
