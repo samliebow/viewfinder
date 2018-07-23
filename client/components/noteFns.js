@@ -34,8 +34,12 @@ const findLineNum = (text, cursorLocation) => {
 };
 
 const formatNotes = (text, cursorLocation, relativeTimeStart) => {
-  let lineNum = findLineNum(text, cursorLocation);
-  text = text.split('\n');
+  const lineNum = findLineNum(text, cursorLocation);
+  const splitText = text.split('\n');
+  // If there's already a timestamp on that line
+  if (!splitText[lineNum] || splitText[lineNum].match(/\[[0-9]{1,2}:[0-9]{2}:[0-9]{2} [AP]M\]:/)) {
+    return text;
+  }
   let time;
   if (relativeTimeStart) {
     const elapsed = moment.duration(Date.now() - relativeTimeStart);
@@ -48,8 +52,8 @@ const formatNotes = (text, cursorLocation, relativeTimeStart) => {
   } else {
     time = moment().format('LTS');
   }
-  text[lineNum] = `[${time}]: ${text[lineNum]}`;
-  return text.join('\n');
+  splitText[lineNum] = `[${time}]: ${splitText[lineNum]}`;
+  return splitText.join('\n');
 };
 
 module.exports = { countHP, formatNotes };
