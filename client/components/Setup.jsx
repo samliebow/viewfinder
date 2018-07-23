@@ -22,16 +22,6 @@ class Setup extends Component {
     show: true
   };
 
-  // setName = candidateName => {
-  //   this.setState({ candidateName });
-  // };
-
-  // setRoom = (value, name) => {
-  //   this.setState({
-  //     rooms: { ...this.state.rooms, [name]: value }
-  //   });
-  // };
-
   toggleShow = () => {
     this.setState({ show: !this.state.show });
   };
@@ -73,7 +63,7 @@ class Setup extends Component {
         />
         <div style={{ display: this.state.show ? 'block' : 'none' }}>
           {startTime ? 
-            <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('h:mm')}. 
+            <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('LT')}. 
               <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
             </div> :
             <div> {loggedIn ? 
