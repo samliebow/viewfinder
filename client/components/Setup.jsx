@@ -49,30 +49,32 @@ class Setup extends Component {
           sectionName="setup"
           toggleShow={this.toggleShow}
         />
-        <div style={{ display: this.state.show ? 'block' : 'none' }}>
-          {startTime ? 
-            <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('LT')}. 
-              <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
-            </div> :
-            <div> {loggedIn ? 
-              'Fetching data...' :
-              loggedIn === false ?
-                <span> <a href='#' onClick={login}>Click here</a> to log in. </span>:
-                `Checking if you're logged in...`} 
-            </div> }
-          <Steps 
-            {...{ candidateName, candidateEmail, currentDate, tlkio }}
-          />
-          <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
-          <Input name="codestitch" setter={this.setRoom} />
-          <Input name="zoom" setter={this.setRoom} />
-          <TlkioScript
-            {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
-          />
-        </div>
-        <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
-          &nbsp;...{' '}
-        </div>
+        {this.state.show ? 
+          <div>
+            {startTime ? 
+              <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('LT')}. 
+                <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
+              </div> :
+              <div> {loggedIn ? 
+                'Fetching data...' :
+                loggedIn === false ?
+                  <span> <a href='#' onClick={login}>Click here</a> to log in. </span>:
+                  `Checking if you're logged in...`} 
+              </div> }
+            <Steps 
+              {...{ candidateName, candidateEmail, currentDate, tlkio }}
+            />
+            <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
+            <Input name="codestitch" setter={this.setRoom} />
+            <Input name="zoom" setter={this.setRoom} />
+            <TlkioScript
+              {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
+            />
+          </div> :
+          <span>
+            &nbsp;...
+          </span>
+        }
       </div>
     );
   }

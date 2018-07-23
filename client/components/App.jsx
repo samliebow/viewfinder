@@ -201,13 +201,13 @@ class App extends Component {
           candidateEmail={candidateEmail}
           rooms={rooms}
         />
-
+        <br />
         <Prompt 
           copyPrompt={this.copyPrompt}
           promptUrl={promptUrl}
           promptButtonsShown={promptButtonsShown}
         />
-
+        <br />
         <Notes />
       </div>
     );
