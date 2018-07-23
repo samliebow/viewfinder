@@ -6,7 +6,7 @@ const SectionTitle = ({ title, sectionName, toggleShow }) => (
     style={{
       display: 'inline-block',
       cursor: 'pointer',
-      'text-decoration': 'underline',
+      textDecoration: 'underline',
       color: '#0000EE'
     }}
   >
