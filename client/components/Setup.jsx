@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
 import LinkRenderer from './LinkRenderer';
+import Steps from './Steps';
 import './Setup.css';
 import tiHistory from '../../tiHistory.js';
 
@@ -49,18 +50,6 @@ class Setup extends Component {
     } = this.props;
     const currentDate = moment().format('YYYY-MM-DD');
 
-    const steps = `
-1. Search for ${candidateEmail || 'the candidate\'s email'} in the [Technical Interview Decisions spreadsheet](https://docs.google.com/spreadsheets/d/1ObVQGqm894fzjeM5vcG2qysYKDng4g8rtgyIwS3vJh8/edit#gid=391982378) (both 'Form Responses' and 'TI History'). 
-2. Choose the first prompt they haven't gotten (in order: Version Control, MRP, Book Library). Click that button below.
-3. Open up a [Codestitch](https://codestitch.io) window, and paste the URL into the input field below.
-4. Schedule a Zoom call named \`${candidateName || 'FIRSTNAME LASTNAME'} - ${currentDate}\` and paste the join link into the input field below.
-    * Make sure it's set to record automatically to the cloud.
-5. Go to [the tlk.io link](${tlkio}) and conduct the interview, using the script snippets below.
-6. Move the completed prompt document from [My Drive](https://drive.google.com/drive/my-drive) to the appropriate month's folder [here](https://drive.google.com/drive/folders/0B5_RJCdGH93GdW1fMWMzQlg3VEE).
-7. Fill out the [Technical Interview Decisions Form](https://goo.gl/forms/IODn7sw3jtpiUq2n1).
-8. If you have any questions, reference the [TI Workflow.](https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit)
-`;
-
     return (
       <div className="setup">
         <SectionTitle
@@ -79,17 +68,14 @@ class Setup extends Component {
                 <span> <a href='#' onClick={login}>Click here</a> to log in. </span>:
                 `Checking if you're logged in...`} 
             </div> }
-          <ReactMarkdown source={steps} renderers={{ link: LinkRenderer }} />
+          <Steps 
+            {...{ candidateName, candidateEmail, currentDate, tlkio }}
+          />
           <Input name="tlkio" setter={this.setRoom} value={tlkio}/>
           <Input name="codestitch" setter={this.setRoom} />
           <Input name="zoom" setter={this.setRoom} />
           <TlkioScript
-            tlkio={tlkio}
-            codestitch={codestitch}
-            zoom={zoom}
-            name={candidateName}
-            email={candidateEmail}
-            startTime={startTime}
+            {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
           />
         </div>
         <div style={{ display: this.state.show ? 'none' : 'inline-block' }}>
