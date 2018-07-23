@@ -186,6 +186,12 @@ class App extends Component {
       promptUrl,
       promptButtonsShown,
     } =  this.state;
+    const {
+      copyPrompt,
+      login,
+      logout,
+      setRoom,
+    } = this;
     return (
       <div className="app" style={{ padding: '2em', height: 'calc(100vh - 4em)' }}>
         <h1
@@ -199,20 +205,11 @@ class App extends Component {
         </h1>
 
         <Setup
-          login={this.login}
-          loggedIn={loggedIn}
-          logout={this.logout}
-          startTime={startTime}
-          candidateName={candidateName}
-          candidateEmail={candidateEmail}
-          rooms={rooms}
-          setRoom={this.setRoom}
+          {...{ login, loggedIn, logout, startTime, candidateName, candidateEmail, rooms, setRoom }}
         />
         <br />
-        <Prompt 
-          copyPrompt={this.copyPrompt}
-          promptUrl={promptUrl}
-          promptButtonsShown={promptButtonsShown}
+        <Prompt
+          {...{ copyPrompt, promptUrl, promptButtonsShown }}
         />
         <br />
         <Notes />
