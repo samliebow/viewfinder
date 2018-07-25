@@ -37,7 +37,7 @@ const formatNotes = (text, cursorLocation, relativeTimeStart) => {
   const lineNum = findLineNum(text, cursorLocation);
   const splitText = text.split('\n');
   // If there's already a timestamp on that line
-  if (!splitText[lineNum] || splitText[lineNum].match(/\[[0-9]{1,2}:[0-9]{2}:[0-9]{2} [AP]M\]:/)) {
+  if (!splitText[lineNum] || splitText[lineNum].match(/\[[0-9]{1,2}:[0-9]{2}:[0-9]{2}( [AP]M)?\]:/)) {
     return text;
   }
   let time;
