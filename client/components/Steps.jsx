@@ -21,17 +21,17 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio }) => {
   const matchingRows = searchTiRows(candidateEmail).map(formatRow);
   return (
     <ol>
-      <li>Search for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl}>Form Responses</a> spreadsheet.</li>
+      <li>Search for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl} target="_blank">Form Responses</a> spreadsheet.</li>
         <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} before 6/27/18: 
           {matchingRows.length ? matchingRows.map(str => <li>{str}</li>) : ' None.'}
         </ul>
       <li>Choose the first prompt they haven't gotten under 'Prompt' below.</li>
-      <li>Open up a <a href={codestitchUrl}>Codestitch</a> pad and paste the URL below.</li>
+      <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
       <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
-      <li>Go to <a href={tlkio}>the tlk.io link</a> and conduct the interview using the script snippets below.</li>
-      <li>Move the completed prompt document from <a href={myDriveUrl}>My Drive</a> to <a href={monthFoldersUrl}>this month's folder</a>.</li>
-      <li>Fill out the <a href={tiDecisionsUrl}>Technical Interview Decisions Form</a>.</li>
-      <li>If you have any questions, reference the <a href={tiWorkflowUrl}>TI Workflow</a>.</li>
+      <li>Go to <a href={tlkio} target="_blank">the tlk.io link</a> and conduct the interview using the script snippets below.</li>
+      <li>Move the completed prompt document from <a href={myDriveUrl} target="_blank">My Drive</a> to <a href={monthFoldersUrl} target="_blank">this month's folder</a>.</li>
+      <li>Fill out the <a href={tiDecisionsUrl} target="_blank">Technical Interview Decisions Form</a>.</li>
+      <li>If you have any questions, reference the <a href={tiWorkflowUrl} target="_blank">TI Workflow</a>.</li>
     </ol>
   );
 };
