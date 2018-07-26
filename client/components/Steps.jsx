@@ -10,12 +10,12 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
     <li>Search for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl} target="_blank">Form Responses</a> spreadsheet.</li>
       {staticTiRows ?
         <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} before 6/27/18:
-          {staticTiRows.length ? staticTiRows.map(str => <li>{str}</li>) : ' None.'}
+          {staticTiRows.length ? staticTiRows.map(str => <li key={str}>{str}</li>) : ' None.'}
         </ul>
       : null }
       {liveTiRows ?
-        <ul>Interviews scheduled since 6/27/18:
-          {liveTiRows.length ? liveTiRows.map(str => <li>{str}</li>) : ' None.'}
+        <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} since 6/27/18:
+          {liveTiRows.length ? liveTiRows.map(str => <li key={str}>{str}</li>) : ' None.'}
         </ul>
       : null}
     <li>Choose the first prompt they haven't gotten under 'Prompt' below.</li>
