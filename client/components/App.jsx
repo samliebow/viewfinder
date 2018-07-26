@@ -4,7 +4,7 @@ import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
 import apiKey from '../../apiKey.js';
-import searchStaticTiHistory from 'searchStaticTiHistory.js';
+import searchStaticTiHistory from './searchStaticTiHistory.js';
 
 class App extends Component {
   state = {
@@ -19,6 +19,8 @@ class App extends Component {
     },
     promptUrl: '',
     promptSelected: false,
+    staticTiRows: null,
+    liveTiRows: null,
   };
 
   componentDidMount() {
@@ -147,7 +149,7 @@ class App extends Component {
     const { data: [{ rowData : rows }]} = sheet;
     // The sheet has a number of empty rows at the bottom,
     // which .filter would needlessly iterate through.
-    const matchingRows = [];
+    const liveTiRows = [];
     for (let i = 0; i < rows.length; i++) {
       const { values } = rows[i];
       // Empty cells are empty objects, so we can't just check truthiness.
@@ -157,10 +159,11 @@ class App extends Component {
 
       const rowEmail = values[4].effectiveValue.stringValue;
       if (rowEmail.trim() === email.trim()) { // No misleading whitespace
-        matchingRows.push(values);
+        liveTiRows.push(values);
       }
     }
-    console.log(matchingRows);
+    const staticTiRows = searchStaticTiHistory(email);
+    this.setState({ staticTiRows, liveTiRows });
   };
 
   handleLogin = (loggingIn = true) => {
@@ -212,6 +215,8 @@ class App extends Component {
       rooms,
       promptUrl,
       promptSelected,
+      staticTiRows,
+      liveTiRows,
     } =  this.state;
     const {
       copyPrompt,
@@ -224,7 +229,18 @@ class App extends Component {
         <h1> HR Interview Noter </h1>
 
         <Setup
-          {...{ login, loggedIn, logout, startTime, candidateName, candidateEmail, rooms, setRoom }}
+          {...{
+            login,
+            loggedIn,
+            logout,
+            startTime,
+            candidateName,
+            candidateEmail,
+            staticTiRows,
+            liveTiRows,
+            rooms,
+            setRoom
+          }}
         />
         <br />
         <Prompt

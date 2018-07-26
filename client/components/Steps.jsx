@@ -5,12 +5,19 @@ const monthFoldersUrl = 'https://drive.google.com/drive/folders/0B5_RJCdGH93GdW1
 const tiDecisionsUrl = 'https://goo.gl/forms/IODn7sw3jtpiUq2n1';
 const tiWorkflowUrl = 'https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit';
 
-const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows }) => (
+const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows, liveTiRows }) => (
   <ol>
     <li>Search for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl} target="_blank">Form Responses</a> spreadsheet.</li>
-      <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} before 6/27/18:
-        {staticTiRows.length ? staticTiRows.map(str => <li>{str}</li>) : ' None.'}
-      </ul>
+      {staticTiRows ?
+        <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} before 6/27/18:
+          {staticTiRows.length ? staticTiRows.map(str => <li>{str}</li>) : ' None.'}
+        </ul>
+      : null }
+      {liveTiRows ?
+        <ul>Interviews scheduled since 6/27/18:
+          {liveTiRows.length ? liveTiRows.map(str => <li>{str}</li>) : ' None.'}
+        </ul>
+      : null}
     <li>Choose the first prompt they haven't gotten under 'Prompt' below.</li>
     <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
     <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>

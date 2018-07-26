@@ -34,6 +34,8 @@ class Setup extends Component {
       startTime,
       candidateName,
       candidateEmail,
+      staticTiRows,
+      liveTiRows,
       rooms: {
         tlkio,
         codestitch,
@@ -59,7 +61,7 @@ class Setup extends Component {
                   `Checking if you're logged in...`} 
               </div> }
             <Steps 
-              {...{ candidateName, candidateEmail, currentDate, tlkio }}
+              {...{ candidateName, candidateEmail, currentDate, tlkio, staticTiRows, liveTiRows }}
             />
             <Input name="tlkio" setter={setRoom} value={tlkio}/>
             <Input name="codestitch" setter={setRoom} />
