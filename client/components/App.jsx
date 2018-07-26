@@ -4,6 +4,7 @@ import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
 import apiKey from '../../apiKey.js';
+import searchStaticTiHistory from 'searchStaticTiHistory.js';
 
 class App extends Component {
   state = {
