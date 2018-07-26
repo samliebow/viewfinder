@@ -1,3 +1,4 @@
+import moment from 'moment';
 import staticTiHistory from '../../staticTiHistory.js';
 
 const tiRows = staticTiHistory.split('\n').map(row => row.split(','));
