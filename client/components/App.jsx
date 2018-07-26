@@ -25,6 +25,7 @@ class App extends Component {
       const scopes = [
         'https://www.googleapis.com/auth/calendar', 
         'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/spreadsheets.readonly',
         ];
       await gapi.client.init({
         apiKey,
@@ -130,10 +131,35 @@ class App extends Component {
         candidateEmail,
         rooms: { ...this.state.rooms, tlkio: tlkioLink },
       });
+      this.getPrevInterviews(candidateEmail);
     } catch (err) {
       console.error(err);
       alert(`There was a problem retrieving information from your calendar; you might have to do it manually. Check the console for more info.`);
     }
+  };
+
+  getPrevInterviews = async email => {
+    const path = 'https://sheets.googleapis.com/v4/spreadsheets/' +
+      '1ObVQGqm894fzjeM5vcG2qysYKDng4g8rtgyIwS3vJh8' +
+      '?ranges=%27Form%20Responses%27&includeGridData=true';
+    const { result: { sheets: [sheet] } } = await gapi.client.request({ path });
+    const { data: [{ rowData : rows }]} = sheet;
+    // The sheet has a number of empty rows at the bottom,
+    // which .filter would needlessly iterate through.
+    const matchingRows = [];
+    for (let i = 0; i < rows.length; i++) {
+      const { values } = rows[i];
+      // Empty cells are empty objects, so we can't just check truthiness.
+      if (!Object.keys(values[0]).length) { // If we're past the filled rows
+        break;
+      }
+
+      const rowEmail = values[4].effectiveValue.stringValue;
+      if (rowEmail.trim() === email.trim()) { // No misleading whitespace
+        matchingRows.push(values);
+      }
+    }
+    console.log(matchingRows);
   };
 
   handleLogin = (loggingIn = true) => {
