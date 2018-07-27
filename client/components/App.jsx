@@ -45,9 +45,9 @@ class App extends Component {
     });
   }
 
-  copyPrompt = async event => {
+  copyPrompt = async (event, prompt) => {
     this.setState({ promptSelected: true });
-    const promptName = event.target.id;
+    const promptName = prompt || event.target.id;
     const promptId = {
       'Version Control': '1tTkmIotuBEP8PwvpxmTaTHKDDUCb8i0ikmTfm8D8oA4',
       'MRP': '196ClAKfTFgO8gWs3O57QGcddVnWiS9RNtAXpVuEcrxU',
@@ -149,6 +149,10 @@ class App extends Component {
     const liveTiRows = this.processLiveTiData(data, email);
     const staticTiRows = searchStaticTiHistory(email);
     this.setState({ staticTiRows, liveTiRows });
+    const allRecords = (liveTiRows.join('') + staticTiRows.join('')).toLowerCase();
+    const prompt = !allRecords.includes('version') ? 'Version Control'
+      : !allRecords.includes('mrp') ? 'MRP' : 'Book Library';
+    this.copyPrompt(null, prompt);
   };
 
   formatLiveTiRow = row => {
