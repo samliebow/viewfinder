@@ -19,12 +19,14 @@ class Notes extends Component {
       let cursorLocation = event.target.selectionEnd;
       let { autonomy, horsepower } = countHP(text);
 
-      this.setState({ autonomy, horsepower });
-      event.target.value = formatNotes(
+      text = formatNotes(
         text,
         cursorLocation,
         this.state.relativeTimeStart
       );
+      this.setState({ autonomy, horsepower, text });
+    } else {
+      this.setState({ text: event.target.value });
     }
   };
 
@@ -58,6 +60,7 @@ class Notes extends Component {
               <textarea
                 onKeyDown={this.handleKeyDown}
                 onChange={this.handleNoteChange}
+                value={this.state.text}
               />
             </span>
 
