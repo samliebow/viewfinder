@@ -5,9 +5,9 @@ const monthFoldersUrl = 'https://drive.google.com/drive/folders/0B5_RJCdGH93GdW1
 const tiDecisionsUrl = 'https://goo.gl/forms/IODn7sw3jtpiUq2n1';
 const tiWorkflowUrl = 'https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit';
 
-const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows, liveTiRows }) => (
+const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows, liveTiRows, suggestedPrompt, copyPrompt, }) => (
   <ol>
-    <li>Search for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl} target="_blank">Form Responses</a> spreadsheet.</li>
+    <li>Records for {candidateEmail || 'the candidate\'s email'} in the <a href={decisionsUrl} target="_blank">Technical Interview Decisions</a> spreadsheet:</li>
       {staticTiRows ?
         <ul>Interviews scheduled by {candidateName.split(' ')[0] || 'candidate'} before 6/27/18:
           {staticTiRows.length ? staticTiRows.map(str => <li key={str}>{str}</li>) : ' None.'}
@@ -18,7 +18,13 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
           {liveTiRows.length ? liveTiRows.map(str => <li key={str}>{str}</li>) : ' None.'}
         </ul>
       : null}
-    <li>Choose the first prompt they haven't gotten under 'Prompt' below.</li>
+      {suggestedPrompt ? 
+        <ul>It looks like they haven't used {suggestedPrompt}.&nbsp; 
+          <a href="#" id={suggestedPrompt} onClick={copyPrompt}>
+              Use {suggestedPrompt}
+          </a>, or choose a prompt below.
+        </ul>
+        : null }
     <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
     <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
     <li>Go to <a href={tlkio} target="_blank">the tlk.io link</a> and conduct the interview using the script snippets below.</li>
