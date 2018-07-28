@@ -55,12 +55,18 @@ class App extends Component {
       'Book Library': '1dDybGPnNcNr3kE9rJMB-_MmQAtFCTujCFauD0KrPNfY',
     }[promptName];
     try {
+      const { result: { files: [{id: monthFolder }] } } = await gapi.client.request({
+        path: 'https://www.googleapis.com/drive/v3/files',
+        params: {
+          q: `parents in '0B5_RJCdGH93GdW1fMWMzQlg3VEE' and name contains '${moment().format('MMMM YYYY')} - Interview Notes'`,
+        },
+      });
       const copyMetadata = await gapi.client.request({
         path: `https://www.googleapis.com/drive/v3/files/${promptId}/copy`,
         method: 'POST',
         body: {
           name: `${this.state.candidateName} - ${moment().format('YYYY-MM-DD')} - ${promptName}`,
-          parents: ['root'],
+          parents: [monthFolder],
         },
       });
       const copyId = copyMetadata.result.id;
