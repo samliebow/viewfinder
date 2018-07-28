@@ -22,13 +22,12 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
         <ul>It looks like they haven't used {suggestedPrompt}.&nbsp; 
           <a href="#" id={suggestedPrompt} onClick={copyPrompt}>
               Use {suggestedPrompt}
-          </a>, or choose a prompt below.
+          </a>, or choose a prompt below. It will save to this month's folder.
         </ul>
         : null }
     <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
     <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
     <li>Go to <a href={tlkio} target="_blank">the tlk.io link</a> and conduct the interview using the script snippets below.</li>
-    <li>Move the completed prompt document from <a href={myDriveUrl} target="_blank">My Drive</a> to <a href={monthFoldersUrl} target="_blank">this month's folder</a>.</li>
     <li>Fill out the <a href={tiDecisionsUrl} target="_blank">Technical Interview Decisions Form</a>.</li>
     <li>If you have any questions, reference the <a href={tiWorkflowUrl} target="_blank">TI Workflow</a>.</li>
   </ol>
