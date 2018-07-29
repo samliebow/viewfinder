@@ -5,7 +5,9 @@ const formatLiveTiRow = row => {
   const time = moment(unwrappedValues[0], 'MM/DD/YYYY HH:mm:ss').format('MMMM Do YYYY');
   const status = unwrappedValues[5];
   const prompt = unwrappedValues[10];
-  return [time, status, prompt].filter(el => el).join(', ');
+  const reviewerRec = unwrappedValues[13] ? `Reviewer recommendation: ${unwrappedValues[13]}` : null;
+  return [time, status, prompt, reviewerRec]
+    .filter(el => el).join(', '); // el => el avoids empty cells being included in the string
 };
 
 const processLiveTiData = (data, email) => {
