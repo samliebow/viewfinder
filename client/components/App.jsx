@@ -151,11 +151,16 @@ class App extends Component {
 
   getPrevInterviews = async email => {
     const staticTiRows = searchStaticTiHistory(email);
-    const liveTiRows = await searchLiveTiHistory(email);
-    const allRecords = (liveTiRows.join('') + staticTiRows.join('')).toLowerCase();
-    const suggestedPrompt = !allRecords.includes('version') ? 'Version Control'
-      : !allRecords.includes('mrp') ? 'MRP' : 'Book Library';
-    this.setState({ staticTiRows, liveTiRows, suggestedPrompt });
+    try {
+      const liveTiRows = await searchLiveTiHistory(email);
+      const allRecords = (liveTiRows.join('') + staticTiRows.join('')).toLowerCase();
+      const suggestedPrompt = !allRecords.includes('version') ? 'Version Control'
+        : !allRecords.includes('mrp') ? 'MRP' : 'Book Library';
+      this.setState({ staticTiRows, liveTiRows, suggestedPrompt });
+    } catch (err) {
+      console.error(err);
+      this.setState({ staticTiRows });
+    }
   };
 
   handleLogin = (loggingIn = true) => {

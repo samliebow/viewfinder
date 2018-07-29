@@ -5,6 +5,7 @@ const tiWorkflowUrl = 'https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3
 
 const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows, liveTiRows, suggestedPrompt, copyPrompt, }) => {
   const pastRecordsAvailable = !!(staticTiRows && liveTiRows);
+  const onlyStaticAvailable = !!(staticTiRows && !liveTiRows);
   let allTiRows, isFirstInterview;
   if (pastRecordsAvailable) {
     allTiRows = staticTiRows.concat(liveTiRows);
@@ -23,6 +24,7 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
     {pastRecordsAvailable ?
       (isFirstInterview ?
         <li>It's {candidateFirst}'s first scheduled interview! {suggestedPromptLine}</li> :
+
         <li>All previous interviews by {candidateFirst} in the <a href={decisionsUrl} target="_blank">Technical Interview Decisions</a> spreadsheet:
           <ul>
             {allTiRows.map(str => <li key={str}>{str}</li>)}
@@ -30,7 +32,16 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
           </ul>
         </li>
       ) :
-      <li>Wait just a moment while we look up previous interview records...</li>
+      (!onlyStaticAvailable ?
+        <li>Wait just a moment while we look up previous interview records...</li> :
+
+        <li>Due to an error, we could only get interview records from the static TI History sheet:
+          <ul>
+            {staticTiRows.map(str => <li key={str}>{str}</li>)}
+          </ul>
+          Look up records for {candidateEmail} in the active <a href={decisionsUrl} target="_blank">Form Responses</a> sheet, or try opening this app in another tab.
+        </li>
+      )
     }
     <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
     <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
