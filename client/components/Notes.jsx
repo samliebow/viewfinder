@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SectionTitle from './SectionTitle';
 import { countHP, formatNotes } from './noteFns';
 
 // ({ show, toggleShow, text, horsepower, autonomy, handleKeyDown, handleNoteChange })

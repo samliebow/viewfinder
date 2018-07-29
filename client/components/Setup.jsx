@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import ReactMarkdown from 'react-markdown';
-import SectionTitle from './SectionTitle';
 import TlkioScript from './TlkioScript';
 import LinkRenderer from './LinkRenderer';
 import Steps from './Steps';

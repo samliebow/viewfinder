@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SectionTitle from './SectionTitle';
 
 class Prompt extends Component {
   state = {
