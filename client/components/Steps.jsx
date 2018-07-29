@@ -33,7 +33,11 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
         </li>
       ) :
       (!onlyStaticAvailable ?
-        <li>Wait just a moment while we look up previous interview records...</li> :
+        (candidateName ?
+          <li>Wait just a moment while we look up previous interview records...</li> :
+          <li>Look up records for the candidate in the <a href={decisionsUrl} target="_blank">Technical Interview Decisions</a> spreadsheet,
+            and select a prompt they haven't used below.</li>
+        ) :
 
         <li>Due to an error, we could only get interview records from the static TI History sheet:
           <ul>
@@ -45,7 +49,7 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
     }
     <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
     <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
-    <li>Go to <a href={tlkio} target="_blank">the tlk.io link</a> and conduct the interview using the script snippets below.</li>
+    <li>Go to {tlkio ? <a href={tlkio} target="_blank">the tlk.io link</a> : 'the tlk.io link in Google Calendar'} and conduct the interview using the script snippets below.</li>
     <li>Fill out the <a href={tiDecisionsUrl} target="_blank">Technical Interview Decisions Form</a>.</li>
     <li>If you have any questions, reference the <a href={tiWorkflowUrl} target="_blank">TI Workflow</a>.</li>
   </ol>
