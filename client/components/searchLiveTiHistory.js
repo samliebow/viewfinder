@@ -1,4 +1,4 @@
-const moment = require('moment');
+import moment from 'moment';
 
 const formatLiveTiRow = row => {
   const unwrappedValues = row.map(cell => cell.formattedValue);
@@ -31,4 +31,4 @@ const searchLiveTiHistory = async email => {
   return liveTiRows;
 }
 
-module.exports = searchLiveTiHistory;
+export default searchLiveTiHistory;

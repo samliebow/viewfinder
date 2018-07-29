@@ -3,9 +3,9 @@ import moment from 'moment';
 import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
-import apiKey from '../../apiKey.js';
-import searchStaticTiHistory from './searchStaticTiHistory.js';
-import searchLiveTiHistory from './searchLiveTiHistory.js';
+import apiKey from '../../apiKey';
+import searchStaticTiHistory from './searchStaticTiHistory';
+import searchLiveTiHistory from './searchLiveTiHistory';
 
 class App extends Component {
   state = {
@@ -56,7 +56,7 @@ class App extends Component {
       'Book Library': '1dDybGPnNcNr3kE9rJMB-_MmQAtFCTujCFauD0KrPNfY',
     }[promptName];
     try {
-      const { result: { files: [{id: monthFolder }] } } = await gapi.client.request({
+      const { result: { files: [{ id: monthFolder }] } } = await gapi.client.request({
         path: 'https://www.googleapis.com/drive/v3/files',
         params: {
           q: `parents in '0B5_RJCdGH93GdW1fMWMzQlg3VEE' and name contains '${moment().format('MMMM YYYY')} - Interview Notes'`,

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import staticTiHistory from '../../staticTiHistory.js';
+import staticTiHistory from '../../staticTiHistory';
 
 const tiRows = staticTiHistory.split('\n').map(row => row.split(','));
 const searchTiRows = email => tiRows
@@ -10,4 +10,5 @@ const formatRow = row => {
   return [formattedTime, status, prompt].filter(el => el).join(', ');
 };
 
-module.exports = email => searchTiRows(email).map(formatRow);
+const searchStaticTiHistory = email => searchTiRows(email).map(formatRow);
+export default searchStaticTiHistory;

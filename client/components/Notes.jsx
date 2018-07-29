@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SectionTitle from './SectionTitle';
-const { countHP, formatNotes } = require('./noteFns');
+import { countHP, formatNotes } from './noteFns';
 
 // ({ show, toggleShow, text, horsepower, autonomy, handleKeyDown, handleNoteChange })
 class Notes extends Component {

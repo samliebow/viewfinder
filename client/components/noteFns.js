@@ -1,4 +1,4 @@
-const moment = require('moment');
+import moment from 'moment';
 
 const countHP = text => {
   let autonomy = 0;
@@ -56,4 +56,4 @@ const formatNotes = (text, cursorLocation, relativeTimeStart) => {
   return splitText.join('\n');
 };
 
-module.exports = { countHP, formatNotes };
+export { countHP, formatNotes };
