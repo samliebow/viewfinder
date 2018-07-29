@@ -11,21 +11,12 @@ const formatLiveTiRow = row => {
 const processLiveTiData = (data, email) => {
   const { result: { sheets: [sheet] } } = data;
   const { data: [{ rowData : rows }]} = sheet;
-  // The sheet has a number of empty rows at the bottom,
-  // which .filter would needlessly iterate through.
-  const unformattedLiveTiRows = [];
-  for (let i = 0; i < rows.length; i++) {
-    const { values } = rows[i];
-    // Empty cells are empty objects, so we can't just check truthiness.
-    if (!Object.keys(values[0]).length) { // If we're past the filled rows
-      break;
-    }
-
-    const rowEmail = values[4].formattedValue;
-    if (rowEmail.trim() === email.trim()) { // No misleading whitespace
-      unformattedLiveTiRows.push(values);
-    }
-  }
+  const unformattedLiveTiRows = rows.map(({ values }) => values).filter(values => {
+    const { formattedValue: rowEmail } = values[4];
+    // rowEmail && avoids problems with the many empty rows at the bottom of the sheet.
+    // Each cell in an empty row is {}, so rowEmail is undefined and .trim() would error.
+    return rowEmail && rowEmail.trim() === email.trim(); // Remove misleading whitespace
+  });
   return unformattedLiveTiRows.map(formatLiveTiRow);
 };
 
