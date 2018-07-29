@@ -177,6 +177,9 @@ class App extends Component {
         },
         promptUrl: '',
         promptSelected: false,
+        suggestedPrompt: '',
+        staticTiRows: null,
+        liveTiRows: null,
       });
     } else {
       const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName().split(' ')[0];
