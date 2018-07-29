@@ -227,7 +227,7 @@ class App extends Component {
     } = this;
     return (
       <div className="app">
-        <h1> HR Interview Noter </h1>
+        <h1> Viewfinder </h1>
 
         <Setup
           {...{
