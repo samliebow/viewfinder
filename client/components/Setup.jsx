@@ -34,12 +34,16 @@ class Setup extends Component {
       startTime,
       candidateName,
       candidateEmail,
+      staticTiRows,
+      liveTiRows,
       rooms: {
         tlkio,
         codestitch,
         zoom,
       },
       setRoom,
+      suggestedPrompt,
+      copyPrompt,
     } = this.props;
     const currentDate = moment().format('YYYY-MM-DD');
 
@@ -59,7 +63,16 @@ class Setup extends Component {
                   `Checking if you're logged in...`} 
               </div> }
             <Steps 
-              {...{ candidateName, candidateEmail, currentDate, tlkio }}
+              {...{
+                candidateName,
+                candidateEmail,
+                currentDate,
+                tlkio,
+                staticTiRows,
+                liveTiRows,
+                suggestedPrompt,
+                copyPrompt,
+              }}
             />
             <Input name="tlkio" setter={setRoom} value={tlkio}/>
             <Input name="codestitch" setter={setRoom} />
