@@ -23,12 +23,12 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
   <ol>
     {pastRecordsAvailable ?
       (isFirstInterview ?
-        <li>It's {candidateFirst}'s first scheduled interview! {suggestedPromptLine}</li> :
+        <li>It's {candidateFirst}'s first scheduled interview! {suggestedPrompt ? suggestedPromptLine : ''}</li> :
 
         <li>All previous interviews by {candidateFirst} in the <a href={decisionsUrl} target="_blank">Technical Interview Decisions</a> spreadsheet:
           <ul>
             {allTiRows.map(str => <li key={str}>{str}</li>)}
-            <li>{suggestedPromptLine}</li>
+            {suggestedPrompt ? <li>{suggestedPromptLine}</li> : null}
           </ul>
         </li>
       ) :
