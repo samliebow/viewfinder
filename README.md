@@ -1,39 +1,43 @@
-# Interview Noter
+# Viewfinder
 
-This application aids HR technical interviewers with note-taking and script-reading.
+This app shortens and simplifies the setup for Hack Reactor technical admissions interviews. 
+* Automatically pulls candidate information from interviewer's calendar
+* Finds and displays results of previous interviews by candidate
+* Suggests prompt to use
+* Creates copy of selected prompt in the correct month's folder, and displays it in the app, with one click
+
+It makes it easier to conduct the interview, too! 
+* Prepopulates script snippets with candidate's name and relevant URLs
+* Makes it easy to take time-stamped notes, either by time of day or time since interview start
+* Consolidates prompt document and notes into one window
+* Keeps a running count of positive and negative notes on the candidate
 
 <p align='center'>
-  <img src="./interview-noter.png" width="30%" alt='interview-noter.png'>
+  <img src="./viewfinder.gif" alt="Viewfinder demo">
 </p>
 
 ## Installation
 
-After building the bundle you can simply open the index.html file, or serve the application with express.
-
-### Opening the file
 1. Clone the repo.
-    * `git clone https://github.com/kguinto/interview-noter.git`
-    * `cd interviewer-noter`
+    * `git clone https://github.com/samliebow/viewfinder`
+    * `cd viewfinder`
 
 2. Run the install.
     * `npm i`
 
-3. Build and start the application.
+## Use
+
+1. Build the bundle, start the server, and launch the webpage.
     * `npm start`
 
-4. If the page isn't already open, you can find it at `/client/dist/index.html`
+2. If the page isn't already open, go to `http://lvh.me:3033`. `lvh.me` resolves to `127.0.0.1` (localhost); this app uses it because Google OAuth doesn't work normally without a domain name.
 
-### Running the server
+3. Log in with your Hack Reactor email.
 
-1. Clone the repo.
-    * `git clone https://github.com/kguinto/interview-noter.git`
-    * `cd interviewer-noter`
+4. Follow the instructions under 'Setup'.
 
-2. Run the install.
-    * `npm i`
+## Acknowledgments
 
-3. Build and start the application.
-    * `npm run start-server`
+Viewfinder is an elaboration on Interview Noter by [Kirk Guinto](http://github.com/kguinto). Kirk came up with the idea of an app that would consolidate the interview materials, and wrote most of the code that doesn't have to do with API calls. I wouldn't even have gotten started working on this without him.
 
-4. Visit the page.
-    * http://localhost:3033/
+Interview Noter was in turn inspired by Autohorse by [James Jelenko](https://github.com/emp-norton), a tool for automatically timestamping and adding up notes which was the basis for the Notes component.
