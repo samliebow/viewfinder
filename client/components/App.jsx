@@ -129,7 +129,7 @@ class App extends Component {
           singleEvents: true,
           orderBy: 'startTime',
           q: '#Interview Online with',
-          timeMin: moment().subtract(10, 'minutes').toISOString(),
+          timeMin: moment().toISOString(), // Interview will be the first that hasn't yet ended
         },
       });
       const { description, start: { dateTime } } = interview;
