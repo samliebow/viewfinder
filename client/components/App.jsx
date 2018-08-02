@@ -3,9 +3,17 @@ import moment from 'moment';
 import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
-import apiKey from '../../apiKey';
 import searchStaticTiHistory from './searchStaticTiHistory';
 import searchLiveTiHistory from './searchLiveTiHistory';
+import {
+  apiKey,
+  clientId,
+  interviewsTitlePrefix,
+  interviewMonthsFolderId,
+  interviewMonthFolderName,
+  prompts,
+  suggestPrompt,
+} from '../../config';
 
 class App extends Component {
   state = {
@@ -27,17 +35,13 @@ class App extends Component {
 
   componentDidMount() {
     gapi.load('client:auth2', async () => {
-      const scopes = [
+      const scope = [
         'https://www.googleapis.com/auth/calendar', 
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/spreadsheets.readonly',
-        ];
-      await gapi.client.init({
-        apiKey,
-        // discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-        clientId: '695004460995-m8hbtlfkktf3d6opnafeer5j0dsbmn72.apps.googleusercontent.com',
-        scope: scopes.join(' '),
-      }).catch(err => alert(`Something went wrong with setting up Google OAuth: ${JSON.stringify(err)}. You should probably refresh.`));
+        ].join(' ');
+      await gapi.client.init({ apiKey, clientId, scope })
+        .catch(err => alert(`Something went wrong with setting up Google OAuth: ${JSON.stringify(err)}. You should probably refresh.`));
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.logout = this.GoogleAuth.disconnect.bind(this.GoogleAuth);
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
@@ -50,16 +54,12 @@ class App extends Component {
   copyPrompt = async event => {
     this.setState({ promptSelected: true, suggestedPrompt: '' });
     const promptName = event.target.id;
-    const promptId = {
-      'Version Control': '1tTkmIotuBEP8PwvpxmTaTHKDDUCb8i0ikmTfm8D8oA4',
-      'MRP': '196ClAKfTFgO8gWs3O57QGcddVnWiS9RNtAXpVuEcrxU',
-      'Book Library': '1dDybGPnNcNr3kE9rJMB-_MmQAtFCTujCFauD0KrPNfY',
-    }[promptName];
+    const promptId = prompts[promptName];
     try {
       const { result: { files: [{ id: monthFolder }] } } = await gapi.client.request({
         path: 'https://www.googleapis.com/drive/v3/files',
         params: {
-          q: `parents in '0B5_RJCdGH93GdW1fMWMzQlg3VEE' and name contains '${moment().format('MMMM YYYY')} - Interview Notes'`,
+          q: `parents in '${interviewMonthsFolderId}' and name contains '${interviewMonthFolderName}'`,
         },
       });
       const copyMetadata = await gapi.client.request({
@@ -128,7 +128,7 @@ class App extends Component {
         params: {
           singleEvents: true,
           orderBy: 'startTime',
-          q: '#Interview Online with',
+          q: interviewsTitlePrefix,
           timeMin: moment().toISOString(), // Interview will be the first that hasn't yet ended
         },
       });
@@ -154,8 +154,7 @@ class App extends Component {
     try {
       const liveTiRows = await searchLiveTiHistory(email);
       const allRecords = (liveTiRows.join('') + staticTiRows.join('')).toLowerCase();
-      const suggestedPrompt = !allRecords.includes('version') ? 'Version Control'
-        : !allRecords.includes('mrp') ? 'MRP' : 'Book Library';
+      const suggestedPrompt = suggestPrompt(allRecords);
       this.setState({ staticTiRows, liveTiRows, suggestedPrompt });
     } catch (err) {
       console.error(err);
