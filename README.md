@@ -25,6 +25,8 @@ It makes it easier to conduct the interview, too!
 2. Run the install.
     * `npm i`
 
+3. Add the configuration files `config.js` and `staticTiHistory.js` to the repo root.
+
 ## Use
 
 1. Build the bundle, start the server, and launch the webpage.
