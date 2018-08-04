@@ -44,7 +44,12 @@ class Setup extends Component {
       suggestedPrompt,
       copyPrompt,
     } = this.props;
-    const currentDate = moment().format('YYYY-MM-DD');
+    const interviewTime = startTime ?
+      (moment().isSame(startTime, 'day') ?
+        startTime.format('LT [today]') :
+        startTime.format('LT dddd [the] Do'))
+      : null;
+    const interviewDate = (startTime || moment()).format('YYYY-MM-DD');
 
     return (
       <div className="setup">
@@ -52,7 +57,7 @@ class Setup extends Component {
         {this.state.show ? 
           <div>
             {startTime ? 
-              <div> Hi {loggedIn}! Your interview with {candidateName} starts at {startTime.format('LT')}. 
+              <div> Hi {loggedIn}! Your interview with {candidateName} starts at {interviewTime}.
                 <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
               </div> :
               <div> {loggedIn ? 
@@ -65,7 +70,7 @@ class Setup extends Component {
               {...{
                 candidateName,
                 candidateEmail,
-                currentDate,
+                interviewDate,
                 tlkio,
                 staticTiRows,
                 liveTiRows,

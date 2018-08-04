@@ -55,6 +55,7 @@ class App extends Component {
     this.setState({ promptSelected: true, suggestedPrompt: '' });
     const promptName = event.target.id;
     const promptId = prompts[promptName];
+    const { candidateName, startTime } = this.state;
     try {
       const { result: { files: [{ id: monthFolder }] } } = await gapi.client.request({
         path: 'https://www.googleapis.com/drive/v3/files',
@@ -66,7 +67,7 @@ class App extends Component {
         path: `https://www.googleapis.com/drive/v3/files/${promptId}/copy`,
         method: 'POST',
         body: {
-          name: `${this.state.candidateName} - ${moment().format('YYYY-MM-DD')} - ${promptName}`,
+          name: `${candidateName} - ${startTime.format('YYYY-MM-DD')} - ${promptName}`,
           parents: [monthFolder],
         },
       });

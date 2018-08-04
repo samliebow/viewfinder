@@ -3,7 +3,7 @@ const codestitchUrl = 'https://codestitch.io';
 const tiDecisionsUrl = 'https://goo.gl/forms/IODn7sw3jtpiUq2n1';
 const tiWorkflowUrl = 'https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit';
 
-const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows, liveTiRows, suggestedPrompt, copyPrompt, }) => {
+const Steps = ({ candidateName, candidateEmail, interviewDate, tlkio, staticTiRows, liveTiRows, suggestedPrompt, copyPrompt }) => {
   const pastRecordsAvailable = !!(staticTiRows && liveTiRows);
   const onlyStaticAvailable = !!(staticTiRows && !liveTiRows);
   let allTiRows, isFirstInterview;
@@ -48,7 +48,7 @@ const Steps = ({ candidateName, candidateEmail, currentDate, tlkio, staticTiRows
       )
     }
     <li>Open up a <a href={codestitchUrl} target="_blank">Codestitch</a> pad and paste the URL below.</li>
-    <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {currentDate}</i> and paste the join link below.</li>
+    <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {interviewDate}</i> and paste the join link below.</li>
     <li>Go to {tlkio ? <a href={tlkio} target="_blank">the tlk.io link</a> : 'the tlk.io link in Google Calendar'} and conduct the interview using the script snippets below.</li>
     <li>Fill out the <a href={tiDecisionsUrl} target="_blank">Technical Interview Decisions Form</a>.</li>
     <li>If you have any questions, reference the <a href={tiWorkflowUrl} target="_blank">TI Workflow</a>.</li>
