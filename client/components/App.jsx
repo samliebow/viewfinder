@@ -34,6 +34,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    fetch('codestitch').then(response => response.text()).then(url => this.setRoom(url, 'codestitch'));
     gapi.load('client:auth2', async () => {
       const scope = [
         'https://www.googleapis.com/auth/calendar',
