@@ -12,7 +12,7 @@ const formatLiveTiRow = row => {
 
 const processLiveTiData = (data, email) => {
   const { result: { sheets: [sheet] } } = data;
-  const { data: [{ rowData : rows }]} = sheet;
+  const { data: [{ rowData : rows }] } = sheet;
   const unformattedLiveTiRows = rows.map(({ values }) => values).filter(values => {
     const { formattedValue: rowEmail } = values[4];
     // rowEmail && avoids problems with the many empty rows at the bottom of the sheet.
