@@ -118,8 +118,6 @@ class App extends Component {
       let hirCalendarLoggedIn;
       let hirCalendarId;
       try {
-        // hirCalendarId = calendars.filter(
-        //   ({ summary }) => summary.includes('HiR'))[0].id;
         hirCalendarsSubscribed = calendars.filter(
           ({ summary }) => summary.includes('HiR'));
         hirCalendarLoggedIn = hirCalendarsSubscribed.find(
