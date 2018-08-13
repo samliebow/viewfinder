@@ -109,14 +109,22 @@ class App extends Component {
 
   getCalendarData = async () => {
     try {
-      const {result: { items: calendars } } = await gapi.client.request({
+      const { result: { items: calendars } } = await gapi.client.request({
         path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
       });
 
+      const loggedInLC = this.state.loggedIn.toLowerCase();
+      let hirCalendarsSubscribed;
+      let hirCalendarLoggedIn;
       let hirCalendarId;
       try {
-        hirCalendarId = calendars.filter(
-          ({ summary }) => summary.includes('HiR'))[0].id;
+        // hirCalendarId = calendars.filter(
+        //   ({ summary }) => summary.includes('HiR'))[0].id;
+        hirCalendarsSubscribed = calendars.filter(
+          ({ summary }) => summary.includes('HiR'));
+        hirCalendarLoggedIn = hirCalendarsSubscribed.find(
+          ({ summary }) => summary.includes(loggedInLC)) || hirCalendarsSubscribed[0];
+        hirCalendarId = hirCalendarLoggedIn.id;
       } catch (err) {
         console.error(err);
         alert(`You don't seem to be using your Hack Reactor account! Just log in again with the right account.`);
@@ -124,7 +132,7 @@ class App extends Component {
         return;
       }
 
-      const {result: {items: [interview] } } = await gapi.client.request({
+      const { result: {items: [interview] } } = await gapi.client.request({
         path: `https://www.googleapis.com/calendar/v3/calendars/${hirCalendarId}/events`,
         params: {
           singleEvents: true,
