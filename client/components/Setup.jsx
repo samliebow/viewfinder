@@ -50,15 +50,14 @@ class Setup extends Component {
         startTime.format('LT dddd [the] Do'))
       : null;
     const interviewDate = (startTime || moment()).format('YYYY-MM-DD');
-    const loggedInFirstName = loggedIn.split(' ')[0];
 
     return (
       <div className="setup">
         <h4 onClick={this.toggleShow}> Setup </h4>
         {this.state.show ? 
           <div>
-            {startTime ? 
-              <div> Hi {loggedInFirstName}! Your interview with {candidateName} starts at {interviewTime}.
+            {startTime ?
+              <div> Hi {loggedIn.split(' ')[0]}! Your interview with {candidateName} starts at {interviewTime}.
                 <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
               </div> :
               <div> {loggedIn ? 
