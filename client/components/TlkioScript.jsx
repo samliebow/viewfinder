@@ -18,22 +18,28 @@ const Link = ({ link }) => (
   </a>
 );
 
-const TlkioScript = ({ codestitch, tlkio, zoom, name, email, startTime }) => (
-  <div className="tlkio-script">
-    <ReactMarkdown
-      source={`
-\`(Send at ${startTime ? startTime.format('h:mm') : 'start'}:) Hi ${name.split(' ')[0]} - if you are present, please input your name in the field below and press enter to join the chat. Then post a message so I know you’re here!\`
+const TlkioScript = ({ codestitch, tlkio, zoom, name, email, startTime }) => {
+  const noShowEmailSubject = `Your Hack Reactor Mock Interview Time is Currently In Progress: Connect Here`;
+  const noShowEmailBody = `Hi ${name.split(' ')[0]},\n\nIt is currently time for your technical interview and we have been waiting for you.\n\nPlease connect with us in the next five minutes by going to the following URL: ${tlkio}\n\nThanks,\n`;
+  const noShowGmailComposeHyperLink = `\` [\`${email}\`](https://mail.google.com/mail/?view=cm&to=${email}&su=${encodeURIComponent(noShowEmailSubject)}&body=${encodeURIComponent(noShowEmailBody)}) \``;
 
-\`(Once they've replied:) Hi! We’ll get started in just a few minutes. To get us started, can you please write your name and email in a comment in this codestitch.io pad?\` [\`${codestitch}\`](${codestitch})
+  return (
+    <div className="tlkio-script">
+      <ReactMarkdown
+        source={`
+  \`(Send at ${startTime ? startTime.format('h:mm') : 'start'}:) Hi ${name.split(' ')[0]} - if you are present, please input your name in the field below and press enter to join the chat. Then post a message so I know you’re here!\`
 
-\`(Once they've written in the Codestitch:) Here’s the link to our video room:\` [\`${zoom}\`](${zoom})\`. Once you have Zoom downloaded please click the link to join. \`
+  \`(Once they've replied:) Hi! We’ll get started in just a few minutes. To get us started, can you please write your name and email in a comment in this codestitch.io pad?\` [\`${codestitch}\`](${codestitch})
 
-\`(Send to ${email || 'their email'} if they don't show ${startTime ? 'by ' + startTime.clone().add(5, 'minutes').format('h:mm') : 'within 5 minutes'}:) Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us by going to the following URL:\` [\`${tlkio}\`](${tlkio})
+  \`(Once they've written in the Codestitch:) Here’s the link to our video room:\` [\`${zoom}\`](${zoom})\`. Once you have Zoom downloaded please click the link to join. \`
 
-`}
-      renderers={{ link: LinkRenderer }}
-    />
-  </div>
-);
+  \`(Send to ${email ? noShowGmailComposeHyperLink : 'their email'} if they don't show ${startTime ? 'by ' + startTime.clone().add(5, 'minutes').format('h:mm') : 'within 5 minutes'}:) Hi ${name.split(' ')[0]}, It is currently time for your technical interview and we have been waiting for you. Please connect with us in the next five minutes by going to the following URL:\` [\`${tlkio}\`](${tlkio})
+
+  `}
+        renderers={{ link: LinkRenderer }}
+      />
+    </div>
+  );
+}
 
 export default TlkioScript;
