@@ -50,6 +50,7 @@ class Setup extends Component {
         startTime.format('LT dddd [the] Do'))
       : null;
     const interviewDate = (startTime || moment()).format('YYYY-MM-DD');
+    const loggedInFirstName = loggedIn.split(' ')[0];
 
     return (
       <div className="setup">
@@ -57,7 +58,7 @@ class Setup extends Component {
         {this.state.show ? 
           <div>
             {startTime ? 
-              <div> Hi {loggedIn}! Your interview with {candidateName} starts at {interviewTime}.
+              <div> Hi {loggedInFirstName}! Your interview with {candidateName} starts at {interviewTime}.
                 <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
               </div> :
               <div> {loggedIn ? 
