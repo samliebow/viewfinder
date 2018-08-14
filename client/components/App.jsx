@@ -112,16 +112,15 @@ class App extends Component {
       const { result: { items: calendars } } = await gapi.client.request({
         path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
       });
-
-      const loggedInLC = this.state.loggedIn.toLowerCase();
-      let hirCalendarsSubscribed;
-      let hirCalendarLoggedIn;
+      const loggedInSplit = this.state.loggedIn.split(' ');
+      const loggedInFirstNameLC = loggedInSplit[0].toLowerCase();
+      const loggedInLastNameLC = loggedInSplit[loggedInSplit.length - 1].toLowerCase();
       let hirCalendarId;
       try {
-        hirCalendarsSubscribed = calendars.filter(
+        const hirCalendarsSubscribed = calendars.filter(
           ({ summary }) => summary.includes('HiR'));
-        hirCalendarLoggedIn = hirCalendarsSubscribed.find(
-          ({ summary }) => summary.includes(loggedInLC)) || hirCalendarsSubscribed[0];
+        const hirCalendarLoggedIn = hirCalendarsSubscribed.filter(
+          ({ summary }) => summary.includes(loggedInFirstNameLC) && summary.includes(loggedInLastNameLC))[0] || hirCalendarsSubscribed[0];
         hirCalendarId = hirCalendarLoggedIn.id;
       } catch (err) {
         console.error(err);
@@ -188,7 +187,7 @@ class App extends Component {
         liveTiRows: null,
       });
     } else {
-      const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName().split(' ')[0];
+      const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName();
       this.setState({ loggedIn });
       this.getCalendarData();
     }
