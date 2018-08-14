@@ -36,7 +36,7 @@ class App extends Component {
   componentDidMount() {
     gapi.load('client:auth2', async () => {
       const scope = [
-        'https://www.googleapis.com/auth/calendar', 
+        'https://www.googleapis.com/auth/calendar',
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/spreadsheets.readonly',
         ].join(' ');
@@ -45,7 +45,7 @@ class App extends Component {
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.logout = this.GoogleAuth.disconnect.bind(this.GoogleAuth);
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
-      this.GoogleAuth.isSignedIn.get() ? 
+      this.GoogleAuth.isSignedIn.get() ?
         this.handleLogin() :
         this.setState({ loggedIn: false });
     });
@@ -112,15 +112,13 @@ class App extends Component {
       const { result: { items: calendars } } = await gapi.client.request({
         path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
       });
-      const loggedInSplit = this.state.loggedIn.split(' ');
-      const loggedInFirstNameLC = loggedInSplit[0].toLowerCase();
-      const loggedInLastNameLC = loggedInSplit[loggedInSplit.length - 1].toLowerCase();
+      const loggedInLC = this.state.loggedIn.replace(/\s/g, '.').toLowerCase();
       let hirCalendarId;
       try {
         const hirCalendarsSubscribed = calendars.filter(
           ({ summary }) => summary.includes('HiR'));
         const hirCalendarLoggedIn = hirCalendarsSubscribed.filter(
-          ({ summary }) => summary.includes(loggedInFirstNameLC) && summary.includes(loggedInLastNameLC))[0] || hirCalendarsSubscribed[0];
+          ({ summary }) => summary.includes(loggedInLC))[0] || hirCalendarsSubscribed[0];
         hirCalendarId = hirCalendarLoggedIn.id;
       } catch (err) {
         console.error(err);
