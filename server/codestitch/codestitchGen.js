@@ -2,9 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 const Nightmare = require('nightmare');
-const { email, password } = require('./codestitchCredentials.js');
 
-const generateUrl = async () => {
+const generateUrl = async (email, password, firstRun = false) => {
   const nightmare = Nightmare();
   let url = await nightmare
     .goto('https://codestitch.io/auth/sign_in')
@@ -27,8 +26,13 @@ const generateUrl = async () => {
 
   // .then after .end is required
   nightmare.end(() => 'Headless browser stopped.').then(console.log.bind(console));
-  fs.writeFile(path.join(__dirname, 'codestitchUrl.txt'), url, 
-    () => console.log(`New Codestitch URL generated for next interview: ${url}.`));
+  
+  if (firstRun) {
+    return url;
+  } else {
+    fs.writeFile(path.join(__dirname, 'codestitchUrl.txt'), url, 
+      () => console.log(`New Codestitch URL generated for next interview: ${url}.`));
+  }
 };
 
 module.exports = generateUrl;

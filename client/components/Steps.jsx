@@ -47,7 +47,7 @@ const Steps = ({ candidateName, candidateEmail, interviewDate, tlkio, codestitch
       )
     }
     <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {interviewDate}</i> and paste the join link below.</li>
-    <li>Open up the <a href={codestitch} target="_blank">Codestitch pad</a>.</li>
+    {codestitch ? <li>Open up the <a href={codestitch} target="_blank">Codestitch pad</a>.</li> : <li> Wait just a moment while we get the Codestitch pad... </li>}
     <li>Go to {tlkio ? <a href={tlkio} target="_blank">the tlk.io link</a> : 'the tlk.io link in Google Calendar'} and conduct the interview using the script snippets below.</li>
     <li>Fill out the <a href={tiDecisionsUrl} target="_blank">Technical Interview Decisions Form</a>.</li>
     <li>If you have any questions, reference the <a href={tiWorkflowUrl} target="_blank">TI Workflow</a>.</li>

@@ -13,6 +13,8 @@ import {
   interviewMonthFolderName,
   prompts,
   suggestPrompt,
+  codestitchEmail,
+  codestitchPassword,
 } from '../../config';
 
 class App extends Component {
@@ -34,7 +36,9 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch('codestitch').then(response => response.text()).then(url => this.setRoom(url, 'codestitch'));
+    fetch(`codestitch?email=${codestitchEmail}&password=${codestitchPassword}`)
+      .then(response => response.text())
+      .then(url => this.setRoom(url, 'codestitch'));
     gapi.load('client:auth2', async () => {
       const scope = [
         'https://www.googleapis.com/auth/calendar',
