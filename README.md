@@ -3,6 +3,7 @@
 This app shortens and simplifies the setup for Hack Reactor technical admissions interviews. 
 * Automatically pulls candidate information from interviewer's calendar
 * Finds and displays results of previous interviews by candidate
+* Generates fresh Codestitch pad
 * Suggests prompt to use
 * Creates copy of selected prompt in the correct month's folder, and displays it in the app, with one click
 
