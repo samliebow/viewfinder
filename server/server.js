@@ -12,12 +12,14 @@ app.get('/codestitch', async (req, res) => {
   let url;
   const { email, password } = req.query;
   try {
-    url = fs.readFileSync(path.join(__dirname, 'codestitch', 'codestitchUrl.txt'), 'utf8');
+    const urlFile = path.join(__dirname, 'codestitch', 'codestitchUrl.txt')
+    url = fs.readFileSync(urlFile, 'utf8');
+    fs.unlink(urlFile, () => codestitchGen(email, password));
   } catch (err) { // If there isn't a preexisting codestitchUrl file
     url = await codestitchGen(email, password, true);
+    codestitchGen(email, password);
   }
   res.send(url);
-  codestitchGen(email, password);
 });
 
 app.listen(PORT, () => {
