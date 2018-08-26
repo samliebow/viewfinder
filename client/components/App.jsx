@@ -36,7 +36,7 @@ class App extends Component {
   componentDidMount() {
     gapi.load('client:auth2', async () => {
       const scope = [
-        'https://www.googleapis.com/auth/calendar', 
+        'https://www.googleapis.com/auth/calendar',
         'https://www.googleapis.com/auth/drive',
         'https://www.googleapis.com/auth/spreadsheets.readonly',
         ].join(' ');
@@ -45,7 +45,7 @@ class App extends Component {
       this.GoogleAuth = gapi.auth2.getAuthInstance();
       this.logout = this.GoogleAuth.disconnect.bind(this.GoogleAuth);
       this.GoogleAuth.isSignedIn.listen(this.handleLogin);
-      this.GoogleAuth.isSignedIn.get() ? 
+      this.GoogleAuth.isSignedIn.get() ?
         this.handleLogin() :
         this.setState({ loggedIn: false });
     });
@@ -109,14 +109,17 @@ class App extends Component {
 
   getCalendarData = async () => {
     try {
-      const {result: { items: calendars } } = await gapi.client.request({
+      const { result: { items: calendars } } = await gapi.client.request({
         path: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
       });
-
+      const loggedInLC = this.state.loggedIn.replace(/\s/g, '.').toLowerCase();
       let hirCalendarId;
       try {
-        hirCalendarId = calendars.filter(
-          ({ summary }) => summary.includes('HiR'))[0].id;
+        const hirCalendarsSubscribed = calendars.filter(
+          ({ summary }) => summary.includes('HiR'));
+        const hirCalendarLoggedIn = hirCalendarsSubscribed.filter(
+          ({ summary }) => summary.includes(loggedInLC))[0] || hirCalendarsSubscribed[0];
+        hirCalendarId = hirCalendarLoggedIn.id;
       } catch (err) {
         console.error(err);
         alert(`You don't seem to be using your Hack Reactor account! Just log in again with the right account.`);
@@ -124,7 +127,7 @@ class App extends Component {
         return;
       }
 
-      const {result: {items: [interview] } } = await gapi.client.request({
+      const { result: {items: [interview] } } = await gapi.client.request({
         path: `https://www.googleapis.com/calendar/v3/calendars/${hirCalendarId}/events`,
         params: {
           singleEvents: true,
@@ -182,7 +185,7 @@ class App extends Component {
         liveTiRows: null,
       });
     } else {
-      const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName().split(' ')[0];
+      const loggedIn = this.GoogleAuth.currentUser.get().getBasicProfile().getName();
       this.setState({ loggedIn });
       this.getCalendarData();
     }

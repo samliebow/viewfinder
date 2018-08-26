@@ -56,8 +56,8 @@ class Setup extends Component {
         <h4 onClick={this.toggleShow}> Setup </h4>
         {this.state.show ? 
           <div>
-            {startTime ? 
-              <div> Hi {loggedIn}! Your interview with {candidateName} starts at {interviewTime}.
+            {startTime ?
+              <div> Hi {loggedIn.split(' ')[0]}! Your interview with {candidateName} starts at {interviewTime}.
                 <br />(Not {loggedIn}? <a href='#' onClick={logout}>Click here.</a>)
               </div> :
               <div> {loggedIn ? 
