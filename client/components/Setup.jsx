@@ -43,11 +43,15 @@ class Setup extends Component {
       setRoom,
       suggestedPrompt,
       copyPrompt,
+      zoomToken,
     } = this.props;
     const interviewTime = startTime ?
       (moment().isSame(startTime, 'day') ?
         startTime.format('LT [today]') :
         startTime.format('LT dddd [the] Do'))
+      : null;
+    const interviewTimeZoom = startTime ?
+      startTime.format('YYYY-MM-DD[T]HH:mm:ss')
       : null;
     const interviewDate = (startTime || moment()).format('YYYY-MM-DD');
 
@@ -77,11 +81,14 @@ class Setup extends Component {
                 liveTiRows,
                 suggestedPrompt,
                 copyPrompt,
+                zoomToken,
+                interviewTimeZoom,
+                setRoom,
               }}
             />
             <Input name="tlkio" setter={setRoom} value={tlkio}/>
             <Input name="codestitch" setter={setRoom} value={codestitch}/>
-            <Input name="zoom" setter={setRoom} />
+            <Input name="zoom" setter={setRoom} value={zoom}/>
             <TlkioScript
               {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
             />

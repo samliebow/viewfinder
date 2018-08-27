@@ -237,6 +237,7 @@ class App extends Component {
       suggestedPrompt,
       staticTiRows,
       liveTiRows,
+      zoomToken,
     } =  this.state;
     const {
       copyPrompt,
@@ -262,6 +263,7 @@ class App extends Component {
             setRoom,
             suggestedPrompt,
             copyPrompt,
+            zoomToken,
           }}
         />
         <br />

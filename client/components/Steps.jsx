@@ -1,8 +1,23 @@
+import axios from 'axios';
 const decisionsUrl = 'https://docs.google.com/spreadsheets/d/1ObVQGqm894fzjeM5vcG2qysYKDng4g8rtgyIwS3vJh8/edit#gid=391982378';
 const tiDecisionsUrl = 'https://goo.gl/forms/IODn7sw3jtpiUq2n1';
 const tiWorkflowUrl = 'https://docs.google.com/document/d/18AJkthUSgu40QUYwQNdQ3B23SIFMVSU5HDr_5bVaCws/edit';
 
-const Steps = ({ candidateName, candidateEmail, interviewDate, tlkio, codestitch, staticTiRows, liveTiRows, suggestedPrompt, copyPrompt }) => {
+const Steps = props => {
+  const {
+    candidateName,
+    candidateEmail,
+    interviewDate,
+    tlkio,
+    codestitch,
+    staticTiRows,
+    liveTiRows,
+    suggestedPrompt,
+    copyPrompt,
+    zoomToken,
+    interviewTimeZoom,
+    setRoom,
+  } = props;
   const pastRecordsAvailable = !!(staticTiRows && liveTiRows);
   const onlyStaticAvailable = !!(staticTiRows && !liveTiRows);
   let allTiRows, isFirstInterview;
@@ -10,6 +25,26 @@ const Steps = ({ candidateName, candidateEmail, interviewDate, tlkio, codestitch
     allTiRows = staticTiRows.concat(liveTiRows);
     isFirstInterview = !allTiRows.length;
   }
+
+  const zoomMeetingName = `${candidateName || 'FIRSTNAME LASTNAME'} - ${interviewDate}`;
+
+  const createMeeting = () => {
+    axios.post('/zoomMeeting', {
+      name: zoomMeetingName,
+      time: interviewTimeZoom,
+      token: zoomToken,
+    }).then(({ data }) => setRoom(data, 'zoom'));
+  };
+
+  const zoomLine = candidateName && interviewTimeZoom && zoomToken ?
+    <li>Click{' '}
+      <a href="#" onClick={createMeeting}>here</a>
+      {' '}to schedule the Zoom call.
+    </li> :
+    <li>Schedule a Zoom call named{' '}
+      <i>{zoomMeetingName}</i>
+      {' '}and paste the join link below.
+    </li>;
 
   const suggestedPromptLine = (<span>
     <a href="#" id={suggestedPrompt} onClick={copyPrompt}>
@@ -46,7 +81,7 @@ const Steps = ({ candidateName, candidateEmail, interviewDate, tlkio, codestitch
         </li>
       )
     }
-    <li>Schedule a Zoom call named <i>{candidateName || 'FIRSTNAME LASTNAME'} - {interviewDate}</i> and paste the join link below.</li>
+    {zoomLine}
     {codestitch ? <li>Open up the <a href={codestitch} target="_blank">Codestitch pad</a>.</li> : <li> Wait just a moment while we get the Codestitch pad... </li>}
     <li>Go to {tlkio ? <a href={tlkio} target="_blank">the tlk.io link</a> : 'the tlk.io link in Google Calendar'} and conduct the interview using the script snippets below.</li>
     <li>Fill out the <a href={tiDecisionsUrl} target="_blank">Technical Interview Decisions Form</a>.</li>
