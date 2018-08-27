@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
@@ -33,6 +34,7 @@ class App extends Component {
     suggestedPrompt: '',
     staticTiRows: null,
     liveTiRows: null,
+    zoomToken: '',
   };
 
   componentDidMount() {
@@ -54,6 +56,15 @@ class App extends Component {
         this.handleLogin() :
         this.setState({ loggedIn: false });
     });
+    // If user just authorized (so this page was redirected to with the token as a query param), get it.
+    // Otherwise, if the server has a refresh token and can get an access token without redirecting, do that.
+    // Otherwise, the server will respond with 303 and the URL to redirect to for authorization.
+    const zoomToken = new URLSearchParams(document.location.search).get('access_token');
+    zoomToken ?
+      this.setState({ zoomToken }) :
+      axios.get('zoom')
+        .then(({ data: zoomToken }) => this.setState({ zoomToken }))
+        .catch(({ response: { data: url } }) => window.location.replace(url));
   }
 
   copyPrompt = async event => {
