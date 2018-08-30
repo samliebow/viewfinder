@@ -56,15 +56,15 @@ class App extends Component {
         this.handleLogin() :
         this.setState({ loggedIn: false });
     });
-    // If user just authorized (so this page was redirected to with the token as a query param), get it.
-    // Otherwise, if the server has a refresh token and can get an access token without redirecting, do that.
-    // Otherwise, the server will respond with 303 and the URL to redirect to for authorization.
+    // If user just authorized Zoom, the access token will be a query param.
     const zoomToken = new URLSearchParams(document.location.search).get('access_token');
-    zoomToken ?
-      this.setState({ zoomToken }) :
-      axios.get('zoom')
-        .then(({ data: zoomToken }) => this.setState({ zoomToken }))
-        .catch(({ response: { data: url } }) => window.location.replace(url));
+    if (zoomToken) {
+      this.setState({ zoomToken });
+      history.replaceState(null, null, 'http://lvh.me:3033'); //Remove access token from displayed URL
+    } else {
+      // Catch only because server responds with 303 (it's really a redirect)
+      axios.get('zoom').catch(({ response: { data: url } }) => window.location.replace(url));
+    }
   }
 
   copyPrompt = async event => {
