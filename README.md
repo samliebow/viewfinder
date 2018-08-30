@@ -6,6 +6,7 @@ This app shortens and simplifies the setup for Hack Reactor technical admissions
 * Generates fresh Codestitch pad
 * Suggests prompt to use
 * Creates copy of selected prompt in the correct month's folder, and displays it in the app, with one click
+* Schedules correctly-named Zoom call in one click
 
 It makes it easier to conduct the interview, too! 
 * Prepopulates script snippets with candidate's name and relevant URLs
@@ -35,9 +36,11 @@ It makes it easier to conduct the interview, too!
 
 2. If the page isn't already open, go to `http://lvh.me:3033`. `lvh.me` resolves to `127.0.0.1` (localhost); this app uses it because Google OAuth doesn't work normally without a domain name.
 
-3. Log in with your Hack Reactor email.
+3. Log in to Zoom when you're redirected there.
 
-4. Follow the instructions under 'Setup'.
+4. Sign in to Google with your Hack Reactor email, using the link in the top left.
+
+5. Follow the instructions under 'Setup'.
 
 ## Acknowledgments
 

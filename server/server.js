@@ -13,7 +13,6 @@ const PORT = process.env.port || 3033;
 app.use(express.static('client/dist'));
 app.use(bodyParser.json());
 
-<<<<<<< 7326f0bcd74c43ce206efa409ba9ae9641834346
 app.get('/codestitch', async (req, res) => {
   let url;
   const { email, password } = req.query;
@@ -31,10 +30,7 @@ app.get('/codestitch', async (req, res) => {
 const redirect_uri = 'http://lvh.me:3033/zoomCode';
 const zoomTokenUrl = path.join(__dirname, 'zoom', 'zoomRefreshToken.txt');
 
-const getOrRefreshToken = async (code, get = true) => {
-=======
 const getToken = async (code) => {
->>>>>>> Fix and simplify Zoom OAuth, add actual meeting creation.
   const authHeader = 'Basic ' + new Buffer(clientId + ':' + clientSecret).toString('base64');
   const queryParams = {
     grant_type: 'authorization_code',
