@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 const querystring = require('querystring');
@@ -10,7 +11,9 @@ const app = express();
 const PORT = process.env.port || 3033;
 
 app.use(express.static('client/dist'));
+app.use(bodyParser.json());
 
+<<<<<<< 7326f0bcd74c43ce206efa409ba9ae9641834346
 app.get('/codestitch', async (req, res) => {
   let url;
   const { email, password } = req.query;
@@ -29,31 +32,45 @@ const redirect_uri = 'http://lvh.me:3033/zoomCode';
 const zoomTokenUrl = path.join(__dirname, 'zoom', 'zoomRefreshToken.txt');
 
 const getOrRefreshToken = async (code, get = true) => {
+=======
+const getToken = async (code) => {
+>>>>>>> Fix and simplify Zoom OAuth, add actual meeting creation.
   const authHeader = 'Basic ' + new Buffer(clientId + ':' + clientSecret).toString('base64');
   const queryParams = {
-    grant_type: get ? 'authorization_code' : 'refresh_token',
-    [get ? 'code' : 'refresh_token']: code,
+    grant_type: 'authorization_code',
+    code,
+    redirect_uri: 'http://lvh.me:3033/zoom',
   };
-  if (get) { queryParams.redirect_uri = redirect_uri; }
-  const { data: { access_token, refresh_token } } = await axios.post(
+  const { data: { access_token } } = await axios.post(
     'https://zoom.us/oauth/token',
     querystring.stringify(queryParams),
     { headers: { "Authorization": authHeader } }
   );
-  fs.writeFile(zoomTokenUrl, refresh_token, () => {});
   return access_token;
 };
 
-app.get('/zoom', async (req, res) => {
-  try {
-    const refreshCode = fs.readFileSync(zoomTokenUrl, 'utf8');
-    const token = await getOrRefreshToken(refreshCode, false);
-    res.send(token);
-  } catch (err) { // This is the first auth, so there's no refresh token
+const makeMeeting = (name, time, token) => ({
+  topic: name,
+  type: 2,
+  start_time: time,
+  timezone: 'America/Los Angeles',
+  settings: {
+    host_video: true,
+    participant_video: true,
+    join_before_host: false,
+    auto_recording: 'cloud',
+  },
+});
+
+app.get('/zoom', async ({ query: { code} }, res) => {
+  if (code) { 
+    const token = await getToken(code);
+    res.redirect(`/?access_token=${token}`);
+  } else {
     const queryParams = {
       response_type: 'code',
       client_id: clientId,
-      redirect_uri,
+      redirect_uri: 'http://lvh.me:3033/zoom',
     };
     const qs = querystring.stringify(queryParams);
     // You can't use res.redirect() in AJAX calls, so you have to redirect client-side.
@@ -61,11 +78,18 @@ app.get('/zoom', async (req, res) => {
   }
 });
 
-app.get('/zoomCode', async (req, res) => {
-  const token = await getOrRefreshToken(req.query.code);
-  res.redirect(`/?access_token=${token}`);
+app.post('/zoomMeeting', (req, res) => {
+  const { name, time, token } = req.body;
+  const meeting = makeMeeting(name, time, token);
+  const Authorization = 'Bearer ' + token;
+  axios.post('https://api.zoom.us/v2/users/me/meetings', meeting, { headers: { Authorization } })
+    .then(({ data }) => res.status(201).send(data))
+    .catch(err => {
+      console.log('error', err.response.status, err.response.data);
+      res.sendStatus(500);
+    });
 });
 
 app.listen(PORT, () => {
-    console.log('Listening on port', PORT);
+  console.log('Listening on port', PORT);
 });
