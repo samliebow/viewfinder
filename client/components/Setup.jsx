@@ -72,6 +72,7 @@ class Setup extends Component {
                 candidateEmail,
                 interviewDate,
                 tlkio,
+                codestitch,
                 staticTiRows,
                 liveTiRows,
                 suggestedPrompt,
@@ -79,7 +80,7 @@ class Setup extends Component {
               }}
             />
             <Input name="tlkio" setter={setRoom} value={tlkio}/>
-            <Input name="codestitch" setter={setRoom} />
+            <Input name="codestitch" setter={setRoom} value={codestitch}/>
             <Input name="zoom" setter={setRoom} />
             <TlkioScript
               {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
