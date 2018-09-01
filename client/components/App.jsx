@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
@@ -33,6 +34,7 @@ class App extends Component {
     suggestedPrompt: '',
     staticTiRows: null,
     liveTiRows: null,
+    zoomToken: '',
   };
 
   componentDidMount() {
@@ -54,6 +56,15 @@ class App extends Component {
         this.handleLogin() :
         this.setState({ loggedIn: false });
     });
+    // If user just authorized Zoom, the access token will be a query param.
+    const zoomToken = new URLSearchParams(document.location.search).get('access_token');
+    if (zoomToken) {
+      this.setState({ zoomToken });
+      history.replaceState(null, null, 'http://lvh.me:3033'); //Remove access token from displayed URL
+    } else {
+      // Catch only because server responds with 303 (it's really a redirect)
+      axios.get('zoom').catch(({ response: { data: url } }) => window.location.replace(url));
+    }
   }
 
   copyPrompt = async event => {
@@ -226,6 +237,7 @@ class App extends Component {
       suggestedPrompt,
       staticTiRows,
       liveTiRows,
+      zoomToken,
     } =  this.state;
     const {
       copyPrompt,
@@ -251,6 +263,7 @@ class App extends Component {
             setRoom,
             suggestedPrompt,
             copyPrompt,
+            zoomToken,
           }}
         />
         <br />
