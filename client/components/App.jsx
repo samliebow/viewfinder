@@ -76,7 +76,7 @@ class App extends Component {
       const { result: { files: [{ id: monthFolder }] } } = await gapi.client.request({
         path: 'https://www.googleapis.com/drive/v3/files',
         params: {
-          q: `parents in '${interviewMonthsFolderId}' and name contains '${interviewMonthFolderName}'`,
+          q: `'${interviewMonthsFolderId}' in parents and name contains '${interviewMonthFolderName}'`,
         },
       });
       const copyMetadata = await gapi.client.request({
@@ -91,7 +91,7 @@ class App extends Component {
       const publishPromise = gapi.client.request({
         path: `https://www.googleapis.com/drive/v3/files/${copyId}/revisions/1`,
         method: 'PATCH',
-        body: { 
+        body: {
           published: true,
           publishAuto: true,
           publishedOutsideDomain: true,
@@ -112,7 +112,7 @@ class App extends Component {
     } catch (error) {
       console.error(error);
       this.setState({ promptButtonsShown: true })
-      error.status === 401 ? 
+      error.status === 401 ?
         alert(`You have to be logged in.`) :
         alert(`
         Couldn't create the prompt document successfully.
