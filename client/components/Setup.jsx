@@ -90,7 +90,7 @@ class Setup extends Component {
             <Input name="codestitch" setter={setRoom} value={codestitch}/>
             <Input name="zoom" setter={setRoom} value={zoom}/>
             <TlkioScript
-              {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime }}
+              {...{ tlkio, codestitch, zoom, name: candidateName, email: candidateEmail, startTime, loggedIn }}
             />
           </div> :
           <span>
