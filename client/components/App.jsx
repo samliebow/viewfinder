@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import axios from 'axios';
+import Credits from './Credits';
 import Notes from './Notes';
 import Prompt from './Prompt';
 import Setup from './Setup';
@@ -272,6 +273,7 @@ class App extends Component {
         />
         <br />
         <Notes />
+        <Credits />
       </div>
     );
   }
