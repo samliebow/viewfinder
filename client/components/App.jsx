@@ -56,15 +56,15 @@ class App extends Component {
         this.handleLogin() :
         this.setState({ loggedIn: false });
     });
-    // If user just authorized Zoom, the access token will be a query param.
-    const zoomToken = new URLSearchParams(document.location.search).get('access_token');
-    if (zoomToken) {
-      this.setState({ zoomToken });
-      history.replaceState(null, null, 'http://lvh.me:3033'); //Remove access token from displayed URL
-    } else {
-      // Catch only because server responds with 303 (it's really a redirect)
-      axios.get('zoom').catch(({ response: { data: url } }) => window.location.replace(url));
-    }
+    // // If user just authorized Zoom, the access token will be a query param.
+    // const zoomToken = new URLSearchParams(document.location.search).get('access_token');
+    // if (zoomToken) {
+    //   this.setState({ zoomToken });
+    //   history.replaceState(null, null, 'http://lvh.me:3033'); //Remove access token from displayed URL
+    // } else {
+    //   // Catch only because server responds with 303 (it's really a redirect)
+    //   axios.get('zoom').catch(({ response: { data: url } }) => window.location.replace(url));
+    // }
   }
 
   copyPrompt = async event => {

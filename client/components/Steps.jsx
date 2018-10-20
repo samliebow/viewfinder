@@ -37,11 +37,11 @@ const Steps = props => {
     .catch(err => alert('Something went wrong with creating the meeting:', err));
   };
 
-  const zoomLine = candidateName && interviewTimeZoom && zoomToken ?
+  const zoomLine = /*candidateName && interviewTimeZoom && zoomToken */ false ?
     <li>Click{' '}
       <a href="#" onClick={createMeeting}>here</a>
       {' '}to schedule the Zoom call. The link will appear below.
-    </li> :
+    </li> : 
     <li>Schedule a Zoom call named{' '}
       <i>{zoomMeetingName}</i>
       {' '}and paste the join link below.
