@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 
 class Prompt extends Component {
   state = {
-    show: true,
+    initialShow: false,
+    show: false,
     source: ''
   };
+
+  componentDidUpdate() {
+    if ((this.props.promptSelected || this.state.show) && !this.state.initialShow) {
+      // Expands on either prompt selection or title click,
+      // but obeys toggleShow afterwards
+      this.setState({ initialShow: true, show: true })
+    }
+  }
 
   setSource = source => {
     this.setState({ source });
@@ -15,7 +24,11 @@ class Prompt extends Component {
   };
 
   render() {
-    const { show, source } = this.state;
+    const { 
+      initialShow,
+      show,
+      source,
+    } = this.state;
     const {
       loggedIn,
       copyPrompt,
@@ -26,7 +39,7 @@ class Prompt extends Component {
     return (
       <div>
         <h4 onClick={this.toggleShow}> Prompt </h4>
-        {show ? 
+        {initialShow && show ? 
           <div>
             <input
               placeholder={"Google Drive prompt link"}
