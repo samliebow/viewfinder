@@ -1,13 +1,14 @@
 node_modules/
 
 .vscode/
+apiNotes.js 
 
+# Generated
 bundle.js
-
-config.js
-apiNotes.js
-
-staticTiHistory.js
-
 codestitchUrl.txt
+
+# config files
+config.js
+snippetsData.js
+staticTiHistory.js
 zoomSecret.js
