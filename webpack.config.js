@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   entry: ['babel-polyfill', __dirname + '/client/components/App.jsx'],
   module: {
@@ -21,5 +23,8 @@ module.exports = {
     filename: 'bundle.js',
     library: 'App',
     libraryTarget: 'var'
-  }
+  },
+  plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  ]
 };
