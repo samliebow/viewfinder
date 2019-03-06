@@ -43,8 +43,10 @@ class Credits extends Component {
             <a href="https://github.com/kjng">Kevin Jang [HRR]</a>.
           </p>
           <p>
-            <a href="https://github.com/lighthurst">Aaron Tesfai [HRSF95]</a>{' '}
-            is the current maintainer of Viewfinder and wielder of the mighty hammer of bug-squashing.
+            Contributors and maintainers include{' '}
+            <a href="https://github.com/lighthurst">Aaron Tesfai</a>,{' '}
+            <a href="https://github.com/GaoR">Rob Gao</a>, and{' '}
+            <a href="https://github.com/IamTechknow">Edmond Lee</a>.
           </p>
         </div> :
         <span>
