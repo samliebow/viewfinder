@@ -39,6 +39,23 @@ class App extends Component {
     zoomToken: '',
   };
 
+  static getInterviewDetails = (description) => {
+    // Determine whether the interview is based on the newer format
+    const isNewer = description.includes('YCBM link ref');
+
+    if (isNewer) {
+      const parsedResults = description.split('\n').map(el => el.split(': ')[1]);
+      const candidateName = `${parsedResults[5]} ${parsedResults[6]}`;
+      const candidateEmail = parsedResults[7];
+      const tlkioLink = parsedResults[3];
+
+      return [candidateName, candidateEmail, tlkioLink];
+    } else {
+      const soonestInterviewDetails = description.split('\n').slice(0, 3);
+      return soonestInterviewDetails.map(el => el.split(': ')[1]);
+    }
+  };
+
   componentDidMount() {
     fetch(`codestitch?email=${codestitchEmail}&password=${codestitchPassword}`)
       .then(response => response.text())
@@ -155,8 +172,8 @@ class App extends Component {
         },
       });
       const { description, start: { dateTime } } = interview;
-      const soonestInterviewDetails = description.split('\n').slice(0, 3);
-      const [candidateName, candidateEmail, tlkioLink] = soonestInterviewDetails.map(el => el.split(': ')[1]);
+      const [candidateName, candidateEmail, tlkioLink] = App.getInterviewDetails(description);
+
       const startTime = moment(dateTime);
       this.setState({
         startTime,
